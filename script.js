@@ -7,6 +7,12 @@ const playlist = [
         duration: "4:34"
     },
     {
+        title: "Lonely Day",
+        artist: "System Of A Down",
+        file: "music/System Of A Down - Lonely Day (Official HD Video) [DnGdoEa1tPg].mp3",
+        duration: "2:47"
+    },
+    {
         title: "Blue Jeans",
         artist: "Lana Del Rey",
         file: "music/Lana Del Rey - Blue Jeans - LanaDelReyVEVO (youtube).mp3",
