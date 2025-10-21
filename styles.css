@@ -30,6 +30,35 @@ body {
   filter: drop-shadow(0 0 10px rgba(139, 0, 0, 0.5));
 }
 
+/* Baratinhas andando juntas */
+.cockroach-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.cockroach {
+  position: absolute;
+  font-size: 24px;
+  filter: drop-shadow(0 0 8px rgba(139, 0, 0, 0.6));
+  opacity: 0.8;
+  transition: all 5s ease-in-out;
+}
+
+.cockroach-1 {
+  left: 20%;
+  top: 30%;
+}
+
+.cockroach-2 {
+  left: 25%;
+  top: 35%;
+}
+
 @keyframes float {
   0%,
   100% {
@@ -1185,6 +1214,11 @@ body {
     opacity: 0.3;
   }
 
+  .cockroach {
+    font-size: 20px;
+    opacity: 0.6;
+  }
+
   .music-player {
     padding: 15px;
     margin: 20px 5px;
@@ -1318,6 +1352,11 @@ body {
   .gothic-element {
     font-size: 14px;
     opacity: 0.2;
+  }
+
+  .cockroach {
+    font-size: 18px;
+    opacity: 0.5;
   }
 
   .footer {

@@ -486,6 +486,8 @@ function stopVisualEffect() {
     // Parar efeitos visuais
 }
 
+
+
 // Inicializar página principal
 function initMainPage() {
     createStars();
@@ -519,6 +521,9 @@ function initMainPage() {
         }
     }, 3000);
 
+    // Inicializar sistema de baratinhas
+    initCockroachSystem();
+
     // Atualizar progresso a cada segundo
     setInterval(updateProgress, 1000);
 
@@ -527,6 +532,7 @@ function initMainPage() {
         console.log(
             "🖤 Bem-vinda à sua carta de amor eterna, Manuella! Você é a minha obsessão mais bela! 🖤"
         );
+        console.log("🪳 As baratinhas estão andando juntinhas por você! 🪳");
     }, 2000);
 }
 
