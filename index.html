@@ -12,6 +12,37 @@
       <!-- Estrelas de entrada -->
       <div class="entry-stars" id="entryStars"></div>
 
+      <!-- Tela especial de Halloween (inicialmente oculta) -->
+      <div class="halloween-entry" id="halloweenEntry">
+        <div class="halloween-content">
+          <h1 class="halloween-title">🎃 Feliz Halloween, meu amor 🎃</h1>
+          <div class="halloween-message">
+            <p>Mesmo longe de você hoje, o feitiço do nosso amor continua me prendendo e eu não quero nunca escapar.</p>
+            
+            <p>Nesse Halloween, eu só queria estar aí, te abraçando no escuro, sentindo o calor do teu corpo enquanto o mundo lá fora se enche de fantasmas e risadas. Mas o único feitiço que realmente importa pra mim é o que você lançou no meu coração desde o dia em que apareceu na minha vida.</p>
+            
+            <p>Você é a minha bruxa favorita, a dona dos meus sonhos e a razão do meu caos.</p>
+            <p>Enquanto o luar ilumina a noite e o vento sopra lá fora, eu fico aqui imaginando você, linda, poderosa, com aquele olhar que me hipnotiza e aquele sorriso que faz o tempo parar.</p>
+            
+            <p>Mesmo distantes, eu sinto você em cada batida do meu coração.</p>
+            <p>Não importa a distância, nem o frio da noite: o nosso amor é o fogo que nunca apaga.</p>
+            <p>Hoje, o que eu mais queria era te dar um beijo entre as sombras e sussurrar no teu ouvido: você é o meu encanto eterno.</p>
+            
+            <p>Então, meu amor, Feliz Halloween.</p>
+            <p>Que essa noite traga um pouco da nossa magia, um pouco da nossa loucura boa e muito do amor que me faz te querer cada vez mais.</p>
+            <p>Prometo que na próxima, a gente comemora juntos, eu e você, o bruxo e a bruxa, presos no mesmo feitiço.</p>
+            
+            <div class="halloween-signature">
+              <p>Com todo o meu amor,</p>
+              <p>Seu bobalhão encantado 🖤</p>
+            </div>
+          </div>
+          <button class="entry-button" onclick="enterPage()">
+            🖤 Continuar 🖤
+          </button>
+        </div>
+      </div>
+
       <!-- Elementos góticos flutuantes -->
       <div
         class="entry-gothic-element"
@@ -64,6 +95,9 @@
       <!-- Estrelas de fundo -->
       <div class="stars" id="stars"></div>
 
+      <!-- Personagens de Halloween flutuando (visíveis apenas no tema) -->
+      <div class="halloween-characters" id="halloweenCharacters"></div>
+
       <!-- Elementos românticos flutuantes -->
       <div
         class="gothic-element"
@@ -102,7 +136,7 @@
         🌚
       </div>
 
-      <!-- Baratinhas andando juntas -->
+      <!-- Baratinhas/Morcegos andando juntos (ícone ajustado via script) -->
       <div class="cockroach-container">
         <div class="cockroach cockroach-1">🪳</div>
         <div class="cockroach cockroach-2">🪳</div>
@@ -112,12 +146,14 @@
         <div class="header">
           <h1 class="main-title">🖤 Te Amo Manuella 🖤</h1>
           <p class="subtitle">Minha obsessão eterna</p>
+          <button class="theme-toggle" id="themeToggleBtn" onclick="toggleHalloweenTheme()" style="display:none">🎃 Tema de Halloween</button>
         </div>
 
         <!-- Navegação por abas -->
         <div class="tabs-navigation">
-          <button class="tab-btn active" onclick="showTab('carta')">Nossa História</button>
-          <button class="tab-btn" onclick="showTab('musicas')">Nossas Músicas</button>
+          <button class="tab-btn active" id="tabBtnCarta" onclick="showTab('carta')">Nossa História</button>
+          <button class="tab-btn" id="tabBtnMusicas" onclick="showTab('musicas')">Nossas Músicas</button>
+          <button class="tab-btn" id="tabBtnHalloween" onclick="showTab('halloween')">Halloween</button>
         </div>
 
         <!-- Conteúdo da Aba: Nossa História -->
@@ -286,8 +322,8 @@
               <div class="player-header">
                 <div class="now-playing">
                   <div class="track-info">
-                    <div class="track-title" id="trackTitle">Join Me In Death</div>
-                    <div class="track-artist" id="trackArtist">HIM</div>
+                  <div class="track-title" id="trackTitle">Join Me In Death</div>
+                  <div class="track-artist" id="trackArtist">HIM</div>
                   </div>
                 </div>
               </div>
@@ -370,6 +406,30 @@
         </div>
         <!-- Fim da Aba: Nossas Músicas -->
 
+        <!-- Conteúdo da Aba: Halloween -->
+        <div id="halloween" class="tab-content">
+          <div class="music-section" style="max-width: 900px;">
+            <h2 class="halloween-title">🎃🖤 Feliz Halloween🖤🎃<br>🎃🖤 meu amor 🖤🎃</h2>
+            <div class="halloween-message">
+              <p>Mesmo longe de você hoje, o feitiço do nosso amor continua me prendendo e eu não quero nunca escapar.</p>
+              <p>Nesse Halloween, eu só queria estar aí, te abraçando no escuro, sentindo o calor do teu corpo enquanto o mundo lá fora se enche de fantasmas e risadas. Mas o único feitiço que realmente importa pra mim é o que você lançou no meu coração desde o dia em que apareceu na minha vida.</p>
+              <p>Você é a minha bruxa, a dona dos meus sonhos e a razão do meu caos.</p>
+              <p>Enquanto o luar ilumina a noite e o vento sopra lá fora, eu fico aqui imaginando você, linda, poderosa, com aquele olhar que me hipnotiza e aquele sorriso que faz o tempo parar.</p>
+              <p>Mesmo distantes, eu sinto você em cada batida do meu coração.</p>
+              <p>Não importa a distância, nem o frio da noite: o nosso amor é o fogo que nunca apaga.</p>
+              <p>Hoje, o que eu mais queria era te dar um beijo entre as sombras e sussurrar no teu ouvido: você é o meu encanto eterno.</p>
+              <p>Então, meu amor, Feliz Halloween.</p>
+              <p>Que essa noite traga um pouco da nossa magia, um pouco da nossa loucura boa e muito do amor que me faz te querer cada vez mais.</p>
+              <p>Prometo que na próxima, a gente comemora juntos, eu e você, o bruxo(macumbeiro) e a bruxa(feiticeira), presos no mesmo feitiço.</p>
+              <div class="halloween-signature">
+                <p>Com todo o meu amor,</p>
+                <p>Seu bobalhão encantado</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Fim da Aba: Halloween -->
+
         <!-- Player de Áudio Local (oculto mas funcionando) -->
         <audio
           id="audio-player"
@@ -382,6 +442,9 @@
       </div>
 
       <!-- Botão flutuante de música -->
+      <button class="floating-images-btn" id="floatingImagesBtn" onclick="toggleFloatingImages()" title="Ativar/Desativar imagens flutuantes">
+        👻
+      </button>
       <button class="floating-music-btn" id="floatingMusicBtn" onclick="toggleFloatingMusic()">
         ⏸️
       </button>
@@ -444,6 +507,7 @@
     </div>
 
     <script src="cockroaches.js"></script>
+    <script src="halloween-characters.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

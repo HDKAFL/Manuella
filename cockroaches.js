@@ -36,7 +36,8 @@ function createRandomCockroach() {
 
     const cockroach = document.createElement('div');
     cockroach.className = 'cockroach random-cockroach';
-    cockroach.innerHTML = '🪳';
+    const icon = document.body.classList.contains('halloween') ? '🦇' : '🪳';
+    cockroach.innerHTML = icon;
 
     // Posição aleatória inicial
     cockroach.style.left = Math.random() * window.innerWidth + 'px';
@@ -91,7 +92,8 @@ function createCockroachAt(x, y) {
 
     const cockroach = document.createElement('div');
     cockroach.className = 'cockroach special-cockroach';
-    cockroach.innerHTML = '🪳';
+    const icon = document.body.classList.contains('halloween') ? '🦇' : '🪳';
+    cockroach.innerHTML = icon;
 
     cockroach.style.left = x + 'px';
     cockroach.style.top = y + 'px';
@@ -116,6 +118,20 @@ function createCockroachAt(x, y) {
             cockroach.parentNode.removeChild(cockroach);
         }
     }, 10000);
+}
+
+// Ajustar os ícones base conforme o tema
+function updateCockroachIcons() {
+    const isHalloween = document.body.classList.contains('halloween');
+    const icon = isHalloween ? '🦇' : '🪳';
+    const c1 = document.querySelector('.cockroach-1');
+    const c2 = document.querySelector('.cockroach-2');
+    if (c1) c1.innerHTML = icon;
+    if (c2) c2.innerHTML = icon;
+    // também atualizar os aleatórios existentes
+    document.querySelectorAll('.cockroach.random-cockroach, .cockroach.special-cockroach').forEach(el => {
+        el.innerHTML = icon;
+    });
 }
 
 // Exportar funções para uso global

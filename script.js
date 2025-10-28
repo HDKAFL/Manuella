@@ -67,7 +67,7 @@ function showTab(tabName) {
     }
 
     // Adicionar classe active ao botão clicado
-    const clickedButton = event.target;
+    const clickedButton = typeof event !== 'undefined' ? event.target : null;
     if (clickedButton) {
         clickedButton.classList.add('active');
     }
@@ -207,21 +207,40 @@ function enterPage() {
 
         // Ativar música MP3 após inicializar
         setTimeout(() => {
+            // Escolher música baseado na data
+            const isHalloween = isHalloweenDate();
+            const musicToUse = isHalloween ? halloweenMusic : manuellaMusic;
+
+            // Obter referências ao áudio
             if (!audio) {
                 audio = document.getElementById("audio-player");
-                audio.volume = manuellaMusic.volume;
-                audio.currentTime = manuellaMusic.startTime;
             }
 
-            // Tocar música automaticamente
-            audio.play().then(() => {
-                isPlaying = true;
-                startVisualEffect();
-                updateFloatingButton();
-            }).catch((error) => {
-                console.log("Erro ao reproduzir áudio:", error);
-                // Se falhar, o usuário pode clicar no botão flutuante
-            });
+            // Atualizar o source da música
+            const audioSource = document.getElementById("audioSource");
+            if (audioSource) {
+                audioSource.src = musicToUse.file;
+                audio.load(); // Recarregar com nova música
+            }
+
+            // Aguardar o carregamento da nova música antes de tocar
+            audio.addEventListener('loadeddata', function playAfterLoad() {
+                audio.removeEventListener('loadeddata', playAfterLoad);
+
+                // Configurar áudio
+                audio.volume = musicToUse.volume;
+                audio.currentTime = musicToUse.startTime;
+
+                // Tocar música automaticamente
+                audio.play().then(() => {
+                    isPlaying = true;
+                    startVisualEffect();
+                    updateFloatingButton();
+                }).catch((error) => {
+                    console.log("Erro ao reproduzir áudio:", error);
+                    // Se falhar, o usuário pode clicar no botão flutuante
+                });
+            }, { once: true });
         }, 500);
     }, 1000);
 }
@@ -266,23 +285,27 @@ function createStars() {
 
 // Adicionar mais elementos românticos flutuantes periodicamente
 function createFloatingGothicElement() {
-    const elements = ["🌕", "❤️", "🖤", "🌙", "💕", "🌚", "💖", "🌗", "🌔"];
-    const randomElement =
-        elements[Math.floor(Math.random() * elements.length)];
+    if (!floatingImagesEnabled) return;
+    const isHalloweenTheme = document.body.classList.contains('halloween');
+    const halloweenEmojis = ["🎃", "🦇", "👻", "🕷️", "🕯️", "🧛", "🧟", "🩸", "🪦"];
+    const classicEmojis = ["🌕", "❤️", "🖤", "🌙", "💕", "🌚", "💖", "🌗", "🌔"];
+    const elements = isHalloweenTheme ? halloweenEmojis : classicEmojis;
+    const randomElement = elements[Math.floor(Math.random() * elements.length)];
 
     const gothicElement = document.createElement("div");
     gothicElement.className = "gothic-element";
     gothicElement.innerHTML = randomElement;
     gothicElement.style.position = "fixed";
     gothicElement.style.fontSize = "25px";
-    gothicElement.style.color = "#8b0000";
+    gothicElement.style.color = isHalloweenTheme ? "#ff6a00" : "#8b0000";
     gothicElement.style.pointerEvents = "none";
     gothicElement.style.zIndex = "1000";
     gothicElement.style.left = Math.random() * window.innerWidth + "px";
     gothicElement.style.top = window.innerHeight + "px";
     gothicElement.style.animation = "float 6s ease-out forwards";
-    gothicElement.style.filter =
-        "drop-shadow(0 0 10px rgba(139, 0, 0, 0.5))";
+    gothicElement.style.filter = isHalloweenTheme
+        ? "drop-shadow(0 0 10px rgba(255, 106, 0, 0.6))"
+        : "drop-shadow(0 0 10px rgba(139, 0, 0, 0.5))";
 
     document.body.appendChild(gothicElement);
 
@@ -295,12 +318,22 @@ function createFloatingGothicElement() {
 const manuellaMusic = {
     name: "Join Me In Death - HIM",
     file: "music/Join Me In Death.mp3",
-    startTime: 50, // Começar no segundo 50
-    volume: 1    // Volume 70%
+    startTime: 0, // Começar do início
+    volume: 0.7    // Volume 70%
+};
+
+// Música de Halloween (usada somente entre 27-31/10)
+const halloweenMusic = {
+    name: "Creepy Music Box (Dark Music)",
+    file: "music-halloween/Creepy Music Box (Dark Music) [XOc8GK0n1Y4].mp3",
+    startTime: 0,
+    volume: 0.7
 };
 
 let isPlaying = false;
 let audio = null;
+let floatingImagesEnabled = true;
+let allowPostHalloweenFeatures = false;
 
 function togglePlay() {
     if (!audio) {
@@ -337,6 +370,26 @@ function togglePlay() {
 // Função para controlar música pelo botão flutuante
 function toggleFloatingMusic() {
     togglePlay();
+}
+
+// Ativar/Desativar imagens flutuantes (personagens e ícones)
+function toggleFloatingImages() {
+    floatingImagesEnabled = !floatingImagesEnabled;
+    const btn = document.getElementById('floatingImagesBtn');
+    if (btn) {
+        if (floatingImagesEnabled) {
+            btn.classList.remove('paused');
+            btn.textContent = '👻';
+            if (document.body.classList.contains('halloween')) {
+                createHalloweenCharacters();
+            }
+        } else {
+            btn.classList.add('paused');
+            btn.textContent = '🚫';
+            const container = document.getElementById('halloweenCharacters');
+            if (container) container.innerHTML = '';
+        }
+    }
 }
 
 // Função para atualizar o estado do botão flutuante
@@ -492,6 +545,7 @@ function stopVisualEffect() {
 function initMainPage() {
     createStars();
     loadGalleryImages(); // Carregar galeria dinamicamente
+    updateStaticGothicElements();
 
     // Configurar audio element com event listeners
     if (!audio) {
@@ -510,7 +564,7 @@ function initMainPage() {
         console.log("Erro no áudio");
     });
 
-    // Player já está tocando automaticamente no HTML
+    // Player toca automaticamente sempre que a página carregar
     isPlaying = true;
     startVisualEffect();
 
@@ -521,8 +575,11 @@ function initMainPage() {
         }
     }, 3000);
 
-    // Inicializar sistema de baratinhas
+    // Inicializar sistema de baratinhas/morcegos e garantir ícone correto
     initCockroachSystem();
+    if (typeof updateCockroachIcons === 'function') {
+        updateCockroachIcons();
+    }
 
     // Atualizar progresso a cada segundo
     setInterval(updateProgress, 1000);
@@ -537,6 +594,197 @@ function initMainPage() {
 }
 
 // Inicializar página de entrada
+function isHalloweenDate() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth() + 1;
+    const day = today.getDate();
+    // Halloween: entre 27/10 e 31/10/2025
+    return year === 2025 && month === 10 && day >= 29 && day <= 1;
+}
+
+function isAfterHalloween2025() {
+    const today = new Date();
+    // depois significa >= 01 de novembro de 2025
+    return today.getTime() > new Date(2025, 9, 1, 23, 59, 59, 999).getTime();
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
     createEntryStars();
+
+    const themeBtn = document.getElementById('themeToggleBtn');
+    const imagesBtn = document.getElementById('floatingImagesBtn');
+    const musicBtn = document.getElementById('floatingMusicBtn');
+    const isHalloween = isHalloweenDate();
+    const afterHalloween = isAfterHalloween2025();
+
+    allowPostHalloweenFeatures = afterHalloween; // só depois de 31/10/2025
+
+    if (musicBtn) musicBtn.style.display = 'inline-flex';
+
+    if (isHalloween) {
+        // 31/10: ativa Halloween automaticamente
+        document.body.classList.add('halloween');
+        createHalloweenCharacters();
+        if (themeBtn) themeBtn.style.display = 'none';
+        // Exibir aba Halloween e focar
+        const tabHalloween = document.getElementById('tabBtnHalloween');
+        if (tabHalloween) tabHalloween.style.display = 'inline-block';
+        showTab('halloween');
+        // Botão de imagens só no tema Halloween
+        if (imagesBtn) imagesBtn.style.display = 'inline-flex';
+        // Ajustar emojis da tela de entrada para Halloween
+        updateStaticGothicElements();
+    } else {
+        // Antes de 31/10: esconder alternância e aba Halloween
+        if (!afterHalloween) {
+            if (themeBtn) themeBtn.style.display = 'none';
+            const tabHalloween = document.getElementById('tabBtnHalloween');
+            if (tabHalloween) tabHalloween.style.display = 'none';
+            if (imagesBtn) imagesBtn.style.display = 'none';
+        } else {
+            // Após 31/10: mostrar alternância e aba Halloween (tema clássico por padrão)
+            if (themeBtn) themeBtn.style.display = 'inline-block';
+            const tabHalloween = document.getElementById('tabBtnHalloween');
+            if (tabHalloween) tabHalloween.style.display = 'inline-block';
+            // Botão de imagens só aparece quando tema Halloween estiver ativo (não aqui)
+            if (imagesBtn) imagesBtn.style.display = 'none';
+        }
+        document.body.classList.remove('halloween');
+        const container = document.getElementById('halloweenCharacters');
+        if (container) container.innerHTML = '';
+        // Ajustar emojis da tela de entrada para o tema clássico
+        updateStaticGothicElements();
+    }
 });
+
+// Alternância do Tema de Halloween
+function toggleHalloweenTheme() {
+    const isHalloween = document.body.classList.toggle('halloween');
+    const charactersContainer = document.getElementById('halloweenCharacters');
+
+    if (charactersContainer) {
+        if (isHalloween) {
+            createHalloweenCharacters();
+            // Focar aba de Halloween
+            showTab('halloween');
+            const allBtns = document.querySelectorAll('.tab-btn');
+            allBtns.forEach(btn => btn.classList.remove('active'));
+            const halloweenBtn = document.getElementById('tabBtnHalloween');
+            if (halloweenBtn) halloweenBtn.classList.add('active');
+        } else {
+            // Limpar personagens quando desativar
+            charactersContainer.innerHTML = '';
+        }
+    }
+
+    const btn = document.getElementById('themeToggleBtn');
+    if (btn) btn.textContent = isHalloween ? '🦇 Tema Clássico' : '🎃 Tema de Halloween';
+
+    // Atualizar ícones de baratas/morcegos
+    if (typeof updateCockroachIcons === 'function') {
+        updateCockroachIcons();
+    }
+
+    // Atualizar os emojis estáticos de fundo conforme o tema
+    updateStaticGothicElements();
+    const imagesBtn2 = document.getElementById('floatingImagesBtn');
+    if (imagesBtn2) imagesBtn2.style.display = isHalloween ? 'inline-flex' : 'none';
+
+    try {
+        localStorage.setItem('theme', isHalloween ? 'halloween' : 'classic');
+    } catch (e) { /* ignore */ }
+
+    // Efeito: ao ativar Halloween, soltar alguns elementos temáticos flutuantes
+    if (isHalloween) {
+        for (let i = 0; i < 6; i++) {
+            setTimeout(() => createFloatingSpookyElement(), i * 250);
+        }
+    }
+}
+
+// Atualiza os elementos góticos estáticos já presentes no HTML
+function updateStaticGothicElements() {
+    const isHalloweenTheme = document.body.classList.contains('halloween');
+    const halloweenEmojis = ["🎃", "🦇", "👻", "🕷️", "🕯️", "🪦"];
+    const classicEmojis = ["🌕", "❤️", "🖤", "🌙", "💕", "🌚"];
+    const set = isHalloweenTheme ? halloweenEmojis : classicEmojis;
+    const nodes = document.querySelectorAll('.gothic-element');
+    nodes.forEach((el, idx) => {
+        el.textContent = set[idx % set.length];
+    });
+}
+
+// Criar personagens de Halloween flutuando
+function createHalloweenCharacters() {
+    const container = document.getElementById('halloweenCharacters');
+    if (!container) return;
+    if (!floatingImagesEnabled) { container.innerHTML = ''; return; }
+
+    // Lista completa de TODAS as imagens disponíveis
+    const characters = [
+        'dada.png',
+        'pngegg.png',
+        'pngegg (1).png',
+        'pngegg (2).png',
+        'pngimg.com - jason_vorhees_PNG14.png',
+        'pngimg.com - ghostface_PNG25.png',
+        'chucky-jason-voorhees-tiffany-freddy-krueger-childs-play-chucky-png-photos-5eb4abeb1891c80399c203e9365ded0c.png',
+        'pinhead-chucky-freddy-krueger-youtube-hellraiser-chucky-13bdcf975b69148f59ec87c735b7246b.png',
+        'pngtree-black-and-white-high-contrast-jason-voorhees-portrait-with-machete-png-image_17014524.webp'
+    ];
+
+    // Limpar container antes de adicionar novos
+    container.innerHTML = '';
+
+    // Adicionar TODAS as imagens (não mais aleatórias)
+    characters.forEach((char, index) => {
+        setTimeout(() => {
+            const img = document.createElement('img');
+            img.src = `photos-hallowen/${char}`;
+            img.className = 'halloween-character';
+            img.alt = 'Halloween Character';
+
+            // Posição inicial aleatória
+            img.style.left = Math.random() * 85 + '%';
+            img.style.top = Math.random() * 80 + '%';
+            img.style.animationDelay = Math.random() * 3 + 's';
+            img.style.animationDuration = (Math.random() * 4 + 8) + 's';
+
+            container.appendChild(img);
+
+            // Fazer personagens se moverem pela tela
+            moveHalloweenCharacter(img);
+            setInterval(() => moveHalloweenCharacter(img), 8000);
+        }, index * 300);
+    });
+}
+
+// Fazer personagens se moverem pela tela
+function moveHalloweenCharacter(element) {
+    const randomX = Math.random() * 90;
+    const randomY = Math.random() * 90;
+    element.style.transition = 'all 8s ease-in-out';
+    element.style.left = randomX + '%';
+    element.style.top = randomY + '%';
+}
+
+// Elementos flutuantes temáticos de Halloween
+function createFloatingSpookyElement() {
+    const icons = ["🎃", "🦇", "🕯️", "🕷️", "🧛", "🧟", "👻"];
+    const icon = icons[Math.floor(Math.random() * icons.length)];
+    const el = document.createElement('div');
+    el.className = 'gothic-element';
+    el.innerHTML = icon;
+    el.style.position = 'fixed';
+    el.style.fontSize = (Math.random() * 14 + 18) + 'px';
+    el.style.left = Math.random() * window.innerWidth + 'px';
+    el.style.top = window.innerHeight + 'px';
+    el.style.color = '#ff6a00';
+    el.style.animation = 'float 6s ease-out forwards';
+    el.style.opacity = '0.7';
+    el.style.filter = 'drop-shadow(0 0 10px rgba(255,106,0,.5))';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 6500);
+}
