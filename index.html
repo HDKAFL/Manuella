@@ -185,9 +185,17 @@
         <div id="anniversary" class="tab-content">
           <div class="music-section" style="max-width: 900px;">
             <h2 class="anniversary-title">💕 Um Mês de Namoro 💕<br>🌹 Meu Amor Eterno 🌹</h2>
+            
+            <!-- Switch para alternar entre declarações -->
+            <div class="declaration-switch">
+              <button class="switch-btn active" id="switchHendricck" onclick="switchDeclaration('Hendricck')">Hendricck</button>
+              <button class="switch-btn" id="switchManuella" onclick="switchDeclaration('manuella')">Manuella</button>
+            </div>
+
+            <!-- Declaração do Hendricck -->
+            <div id="HendricckDeclaration" class="anniversary-declaration">
             <div class="anniversary-message">
               <div class="anniversary-hero">
-                <div class="anniversary-badge">30 dias</div>
                 <p class="anniversary-subtitle">Um mês de amor intenso, de noites sem fim e de sonhos que se tornam realidade</p>
               </div>
               
@@ -236,6 +244,46 @@
                   <p>Para sempre seu,</p>
                   <p>Seu bobalhão obcecado</p>
                   <p class="anniversary-date">💕 03 de Novembro de 2025 💕</p>
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <!-- Declaração da Manuella -->
+            <div id="manuellaDeclaration" class="anniversary-declaration" style="display: none;">
+              <div class="anniversary-message">
+                <div class="anniversary-hero">
+                  <p class="anniversary-subtitle">Um mês de amor intenso, de noites sem fim e de sonhos que se tornam realidade</p>
+                </div>
+                
+                <div class="anniversary-content">
+                  <p class="video-subtitle" style="text-align: center; color: #ffc1e0; font-size: 1.1em; margin: 20px 0 30px; font-style: italic; text-shadow: 0 0 10px rgba(255, 193, 224, 0.6);">💕 Vídeos e mensagem feitos pelo amor da minha vida, minha Manuella 💕</p>
+                  
+                  <div class="video-section">
+                    <div class="video-container">
+                      <video class="love-video" controls preload="metadata">
+                        <source src="video-manuella/WhatsApp Video 2025-11-03 at 00.00.08.mp4" type="video/mp4">
+                        Seu navegador não suporta vídeo HTML5.
+                      </video>
+                    </div>
+                    
+                    <div class="video-message" style="margin: 0;">
+                      <p>Feliz 1 mês de namoro meu amor, 1 mês de namoro com o amor da minha vida. Hendricck nunca duvide do quanto eu te amo, você é o amor da minha vida, o homem que eu mais amei, você me faz muito feliz. Que venha muitos e muitos meses e anos ao seu lado. Quero continuar tendo uma vida ao seu lado, você é tudo que eu sempre quis. Meu namorado, meu futuro marido. É pai da nossa pestinha ❤️❤️</p>
+                    </div>
+                    
+                    <div class="video-container">
+                      <video class="love-video" controls preload="metadata">
+                        <source src="video-manuella/WhatsApp Video 2025-11-03 at 00.00.20.mp4" type="video/mp4">
+                        Seu navegador não suporta vídeo HTML5.
+                      </video>
+                    </div>
+                  </div>
+                  
+                  <div class="anniversary-signature">
+                    <p>Para sempre minha,</p>
+                    <p>Minha Bruxinha das Trevas</p>
+                    <p class="anniversary-date">💕 03 de Novembro de 2025 💕</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -372,6 +420,26 @@
         // Também atualizar após um pequeno delay para garantir que os scripts carregaram
         setTimeout(updateTabButton, 100);
       })();
+
+      // Função para alternar entre declarações
+      function switchDeclaration(author) {
+        const HendricckDeclaration = document.getElementById('HendricckDeclaration');
+        const manuellaDeclaration = document.getElementById('manuellaDeclaration');
+        const HendricckBtn = document.getElementById('switchHendricck');
+        const manuellaBtn = document.getElementById('switchManuella');
+
+        if (author === 'Hendricck') {
+          HendricckDeclaration.style.display = 'block';
+          manuellaDeclaration.style.display = 'none';
+          HendricckBtn.classList.add('active');
+          manuellaBtn.classList.remove('active');
+        } else {
+          HendricckDeclaration.style.display = 'none';
+          manuellaDeclaration.style.display = 'block';
+          HendricckBtn.classList.remove('active');
+          manuellaBtn.classList.add('active');
+        }
+      }
     </script>
   </body>
 </html>
