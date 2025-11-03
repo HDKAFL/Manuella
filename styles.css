@@ -2011,6 +2011,45 @@ body.anniversary .entry-subtitle {
   .volume-slider {
     width: 100px;
   }
+
+  .anniversary-stats {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 15px;
+    gap: 10px;
+    margin: 30px 0;
+  }
+
+  .stat-item {
+    padding: 12px 8px;
+  }
+
+  .stat-item:nth-child(3) {
+    grid-column: 1 / -1;
+    max-width: 50%;
+    margin: 0 auto;
+  }
+
+  .stat-number {
+    font-size: 2.5em;
+  }
+
+  .stat-label {
+    font-size: 1.1em;
+  }
+
+  .anniversary-message {
+    padding: 25px 15px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .music-section {
+    padding: 0 10px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 360px) {
@@ -2100,20 +2139,61 @@ body.anniversary .entry-subtitle {
   }
 
   .anniversary-stats {
-    grid-template-columns: 1fr;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 15px;
+    margin: 20px 0;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .stat-item {
+    padding: 12px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .stat-item:nth-child(3) {
+    grid-column: 1 / -1;
+    max-width: 50%;
+    margin: 0 auto;
   }
 
   .stat-number {
     font-size: 2em;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    text-align: center;
   }
 
   .stat-label {
     font-size: 1em;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    text-align: center;
   }
 
   .anniversary-message {
-    padding: 20px 15px;
+    padding: 20px 12px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .anniversary-content {
+    box-sizing: border-box;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
   }
 
   .anniversary-content p {
