@@ -7,6 +7,24 @@ function formatTime(seconds) {
     return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
+// Aplica tema visual apenas na aba (não altera tema global)
+function applyTabVisualTheme(tabName) {
+    // Remover classes de tema visual das abas
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('visual-theme-halloween', 'visual-theme-anniversary');
+    });
+
+    // Aplicar tema visual baseado na aba
+    const selectedTab = document.getElementById(tabName);
+    if (selectedTab) {
+        if (tabName === 'halloween') {
+            selectedTab.classList.add('visual-theme-halloween');
+        } else if (tabName === 'anniversary') {
+            selectedTab.classList.add('visual-theme-anniversary');
+        }
+    }
+}
+
 // Função para mostrar/esconder abas
 function showTab(tabName) {
     // Esconder todas as abas
@@ -27,10 +45,25 @@ function showTab(tabName) {
         selectedTab.classList.add('active');
     }
 
-    // Adicionar classe active ao botão clicado (se houver evento de clique)
-    const clickedButton = (typeof event !== 'undefined' && event && event.target && event.target.classList) ? event.target : null;
-    if (clickedButton) {
-        clickedButton.classList.add('active');
+    // Adicionar classe active ao botão correspondente
+    const buttonId = 'tabBtn' + tabName.charAt(0).toUpperCase() + tabName.slice(1);
+    const correspondingButton = document.getElementById(buttonId);
+    if (correspondingButton) {
+        correspondingButton.classList.add('active');
+    } else {
+        // Fallback: tentar adicionar ao botão clicado via evento
+        const clickedButton = (typeof event !== 'undefined' && event && event.target && event.target.classList) ? event.target : null;
+        if (clickedButton) {
+            clickedButton.classList.add('active');
+        }
+    }
+
+    // Aplicar tema visual apenas na aba (sem alterar tema global)
+    applyTabVisualTheme(tabName);
+
+    // Se for a aba de aniversário, atualizar estatísticas
+    if (tabName === 'anniversary' && typeof updateAnniversaryStats === 'function') {
+        updateAnniversaryStats();
     }
 }
 
@@ -49,6 +82,7 @@ function isAfterHalloween2025() {
 // Exportar para uso global
 window.formatTime = formatTime;
 window.showTab = showTab;
+window.applyTabVisualTheme = applyTabVisualTheme;
 window.isHalloweenDate = isHalloweenDate;
 window.isAfterHalloween2025 = isAfterHalloween2025;
 

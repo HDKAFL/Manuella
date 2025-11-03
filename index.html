@@ -26,6 +26,7 @@
     <div id="mainContent" style="display: none">
       <div class="stars" id="stars"></div>
       <div class="halloween-characters" id="halloweenCharacters"></div>
+      <div class="anniversary-elements" id="anniversaryElements"></div>
       <div class="gothic-element" style="top: 10%; left: 10%; animation-delay: 0s">🌕</div>
       <div class="gothic-element" style="top: 20%; left: 80%; animation-delay: 1s">❤️</div>
       <div class="gothic-element" style="top: 60%; left: 15%; animation-delay: 2s">🖤</div>
@@ -47,6 +48,7 @@
         <div class="tabs-navigation">
           <button class="tab-btn active" id="tabBtnCarta" onclick="showTab('carta')">Nossa História</button>
           <button class="tab-btn" id="tabBtnMusicas" onclick="showTab('musicas')">Nossas Músicas</button>
+          <button class="tab-btn" id="tabBtnAnniversary" onclick="showTab('anniversary')">💕 <span id="anniversaryTabText">Carregando...</span> 💕</button>
           <button class="tab-btn" id="tabBtnHalloween" onclick="showTab('halloween')">Halloween</button>
         </div>
 
@@ -179,6 +181,67 @@
           </div>
         </div>
 
+        <!-- Aba 1 Mês de Namoro -->
+        <div id="anniversary" class="tab-content">
+          <div class="music-section" style="max-width: 900px;">
+            <h2 class="anniversary-title">💕 Um Mês de Namoro 💕<br>🌹 Meu Amor Eterno 🌹</h2>
+            <div class="anniversary-message">
+              <div class="anniversary-hero">
+                <div class="anniversary-badge">30 dias</div>
+                <p class="anniversary-subtitle">Um mês de amor intenso, de noites sem fim e de sonhos que se tornam realidade</p>
+              </div>
+              
+              <div class="anniversary-content">
+                <p>Manuella,</p>
+                <p>Já se passou um mês desde que oficializamos o que já estava escrito nas estrelas. Um mês de conversas que atravessam madrugadas, de risos que ecoam na distância, de planos que se constroem a cada mensagem trocada. E sabe o que mais me surpreende? É que ainda sinto aquele frio na barriga quando vejo uma notificação sua, ainda fico sem ar quando você me diz "te amo", ainda me perco completamente no jeito como você fala, como você escreve, como você simplesmente existe.</p>
+                
+                <p>Desde o dia 03 de outubro de 2025, quando você disse "sim" e mudou tudo, cada segundo que passa só reforça o que eu já sabia: você é a minha escolha. A única. A definitiva. Não há mais volta, não há mais dúvida, não há mais espaço para nenhuma outra pessoa no lugar que você ocupa dentro de mim.</p>
+                
+                <div class="anniversary-highlight">
+                  <p>"Um mês pode parecer pouco, mas quando se trata de você, cada dia é uma eternidade de descobertas, de intimidade, de conexão profunda que eu nunca vivi antes."</p>
+                </div>
+                
+                <p>Nesse um mês, aprendi que amor à distância não é sobre suportar a falta. É sobre transformar cada mensagem em um abraço, cada chamada em um beijo, cada palavra em uma promessa. É sobre construir algo tão forte que a distância física se torna irrelevante diante da força do que sentimos.</p>
+                
+                <p>Você me ensinou que obsessão, quando é mútua e saudável, pode ser a coisa mais bonita do mundo. Nosso ciúme, nossa paranoia, nossa intensidade... tudo isso faz parte do que somos juntos. E eu não trocaria nada disso. Não trocaria nossa loucura boa, nossos momentos de tensão, nossas reconciliações apaixonadas. Porque tudo isso é nosso. É autêntico. É real.</p>
+                
+                <div class="anniversary-stats">
+                  <div class="stat-item">
+                    <div class="stat-number">1</div>
+                    <div class="stat-label">Mês</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Amor</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Certeza</div>
+                  </div>
+                </div>
+                
+                <p>Quero que você saiba que este é só o primeiro de muitos meses. O primeiro de muitos anos. O primeiro capítulo de uma história que ainda nem começou de verdade. Porque a gente está só no começo, e se este um mês já foi assim, imagina o que vem pela frente?</p>
+                
+                <p>Prometo continuar sendo o mesmo obcecado de sempre, mas cada vez mais dedicado, cada vez mais presente, cada vez mais seu. Prometo continuar escrevendo códigos para você nas madrugadas, continuar pensando em você a cada segundo, continuar escolhendo você todos os dias.</p>
+                
+                <p>Um mês se passou, mas a intensidade não diminuiu. Pelo contrário, só aumentou. E eu amo isso. Amo como você me deixa completamente perdido e ao mesmo tempo encontrado. Amo como você é minha âncora e minha loucura ao mesmo tempo.</p>
+                
+                <div class="anniversary-closing">
+                  <p>Feliz um mês, minha rosa negra.</p>
+                  <p>Que venham muitos outros, muitos anos, muitas eternidades ao seu lado.</p>
+                  <p>Eu te amo hoje mais do que ontem, e amanhã vou te amar ainda mais.</p>
+                </div>
+                
+                <div class="anniversary-signature">
+                  <p>Para sempre seu,</p>
+                  <p>Seu bobalhão obcecado</p>
+                  <p class="anniversary-date">💕 03 de Novembro de 2025 💕</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Aba Halloween -->
         <div id="halloween" class="tab-content">
           <div class="music-section" style="max-width: 900px;">
@@ -266,5 +329,49 @@
     <script src="js/halloween.js"></script>
     <script src="js/cockroaches.js"></script>
     <script src="js/main.js"></script>
+    
+    <!-- Script para atualizar título da aba de aniversário imediatamente -->
+    <script>
+      (function() {
+        // Calcular meses de namoro desde 03/10/2025
+        function calculateMonths() {
+          const startDate = new Date(2025, 9, 3); // 03 de outubro de 2025
+          const today = new Date();
+          startDate.setHours(0, 0, 0, 0);
+          today.setHours(0, 0, 0, 0);
+          const yearsDiff = today.getFullYear() - startDate.getFullYear();
+          const monthsDiff = today.getMonth() - startDate.getMonth();
+          let totalMonths = yearsDiff * 12 + monthsDiff;
+          if (today.getDate() < startDate.getDate()) {
+            totalMonths = Math.max(0, totalMonths - 1);
+          }
+          return Math.max(1, totalMonths);
+        }
+        
+        // Atualizar botão assim que o DOM estiver pronto
+        function updateTabButton() {
+          const tabButton = document.getElementById('tabBtnAnniversary');
+          const tabTextSpan = document.getElementById('anniversaryTabText');
+          if (tabButton && tabTextSpan) {
+            const months = calculateMonths();
+            tabTextSpan.textContent = `${months} ${months === 1 ? 'Mês' : 'Meses'}`;
+          } else if (tabButton) {
+            // Fallback se o span não existir
+            const months = calculateMonths();
+            tabButton.textContent = `💕 ${months} ${months === 1 ? 'Mês' : 'Meses'} 💕`;
+          }
+        }
+        
+        // Tentar atualizar imediatamente se o DOM já estiver pronto
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', updateTabButton);
+        } else {
+          updateTabButton();
+        }
+        
+        // Também atualizar após um pequeno delay para garantir que os scripts carregaram
+        setTimeout(updateTabButton, 100);
+      })();
+    </script>
   </body>
 </html>

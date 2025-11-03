@@ -41,6 +41,13 @@ function initMainPage() {
     renderPlaylist(); // Renderizar playlist dinamicamente (com música de Halloween se aplicável)
     renderGothicElements(); // Renderizar emojis góticos baseado no tema
     updateStaticGothicElements();
+    
+    // Atualizar estatísticas de aniversário se estiver na aba correta
+    if (document.getElementById('anniversary') && document.getElementById('anniversary').classList.contains('active')) {
+        if (typeof updateAnniversaryStats === 'function') {
+            updateAnniversaryStats();
+        }
+    }
 
     // Configurar audio element com event listeners
     if (!audio) {
@@ -92,6 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const imagesBtn = document.getElementById('floatingImagesBtn');
     const musicBtn = document.getElementById('floatingMusicBtn');
     const isHalloween = isHalloweenDate();
+    const isAnniversary = isThemeDate('anniversary', new Date());
     const afterHalloween = isAfterHalloween2025();
 
     allowPostHalloweenFeatures = afterHalloween; // só depois de 31/10/2025
@@ -116,13 +124,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Mostrar/ocultar UI
     const tabHalloween = document.getElementById('tabBtnHalloween');
-    // Aba Halloween: visível apenas DURANTE os dias do evento
-    if (tabHalloween) tabHalloween.style.display = isHalloween ? 'inline-block' : 'none';
-    // Botão de tema: oculto DURANTE Halloween, visível apenas APÓS
-    if (themeBtn) themeBtn.style.display = afterHalloween ? 'inline-block' : 'none';
+    // Aba Halloween: sempre visível (usuário pode acessar pelo botão de tema)
+    if (tabHalloween) tabHalloween.style.display = 'inline-block';
+    // Botão de tema: oculto em datas comemorativas (será controlado pelo applyTheme)
+    // Não definir aqui, deixar o applyTheme controlar
 
     applyTheme(initialTheme, { skipPersist: true });
     if (!themeRegistry[initialTheme].addBodyClass && imagesBtn) imagesBtn.style.display = 'none';
+    
+    // Atualizar título do botão da aba de aniversário sempre que a página carrega
+    if (typeof updateAnniversaryStats === 'function') {
+        updateAnniversaryStats();
+    }
+    
+    // Se for tema de aniversário, garantir que a música esteja na playlist e preparada
+    if (initialTheme === 'anniversary' && typeof renderPlaylist === 'function') {
+        renderPlaylist();
+    }
     
     // Se for Halloween, focar na aba Halloween automaticamente
     if (isHalloween) {
@@ -131,6 +149,15 @@ document.addEventListener("DOMContentLoaded", function () {
         allBtns.forEach(btn => btn.classList.remove('active'));
         const halloweenBtn = document.getElementById('tabBtnHalloween');
         if (halloweenBtn) halloweenBtn.classList.add('active');
+    }
+    
+    // Se for dia 3 (aniversário mensal), focar na aba de aniversário automaticamente
+    if (isAnniversary) {
+        showTab('anniversary');
+        const allBtns = document.querySelectorAll('.tab-btn');
+        allBtns.forEach(btn => btn.classList.remove('active'));
+        const anniversaryBtn = document.getElementById('tabBtnAnniversary');
+        if (anniversaryBtn) anniversaryBtn.classList.add('active');
     }
 });
 

@@ -10,7 +10,8 @@ const CONFIG = {
         photosHalloween: 'photos-halloween/',
         photosCat: 'photos-cat/',
         music: 'music/',
-        musicHalloween: 'music-halloween/'
+        musicHalloween: 'music-halloween/',
+        musicAnniversary: 'music-anniversary/'
     },
 
     // ==========================================
@@ -20,7 +21,9 @@ const CONFIG = {
         defaultVolume: 0.7,
         manuellaMusicStartTime: 0,
         halloweenMusicStartTime: 0,
-        halloweenMusicVolume: 0.7
+        halloweenMusicVolume: 0.7,
+        anniversaryMusicStartTime: 0,
+        anniversaryMusicVolume: 0.7
     },
 
     // ==========================================
@@ -46,7 +49,8 @@ const CONFIG = {
         // Emojis góticos para tela de entrada e principal
         gothicEmojis: ['🦇', '🌙', '🖤', '🌹', '⚰️', '🔮'],
         classicEmojis: ['🌕', '❤️', '🖤', '🌙', '💕', '🌚'],
-        halloweenEmojis: ['🎃', '🦇', '👻', '🕷️', '🕯️', '🪦']
+        halloweenEmojis: ['🎃', '🦇', '👻', '🕷️', '🕯️', '🪦'],
+        anniversaryEmojis: ['💕', '💖', '💗', '🌹', '✨', '💝']
     },
 
     // ==========================================

@@ -36,7 +36,14 @@ function createRandomCockroach() {
 
     const cockroach = document.createElement('div');
     cockroach.className = 'cockroach random-cockroach';
-    const icon = document.body.classList.contains('halloween') ? '🦇' : '🪳';
+    const isHalloween = document.body.classList.contains('halloween');
+    const isAnniversary = document.body.classList.contains('anniversary');
+    let icon = '🪳';
+    if (isHalloween) {
+        icon = '🦇';
+    } else if (isAnniversary) {
+        icon = '❤️'; // Coração vermelho para extras
+    }
     cockroach.innerHTML = icon;
 
     // Posição aleatória inicial
@@ -90,7 +97,14 @@ function createCockroachAt(x, y) {
 
     const cockroach = document.createElement('div');
     cockroach.className = 'cockroach special-cockroach';
-    const icon = document.body.classList.contains('halloween') ? '🦇' : '🪳';
+    const isHalloween = document.body.classList.contains('halloween');
+    const isAnniversary = document.body.classList.contains('anniversary');
+    let icon = '🪳';
+    if (isHalloween) {
+        icon = '🦇';
+    } else if (isAnniversary) {
+        icon = '❤️'; // Coração vermelho para especiais
+    }
     cockroach.innerHTML = icon;
 
     cockroach.style.left = x + 'px';
@@ -121,14 +135,37 @@ function createCockroachAt(x, y) {
 // Ajustar os ícones base conforme o tema
 function updateCockroachIcons() {
     const isHalloween = document.body.classList.contains('halloween');
-    const icon = isHalloween ? '🦇' : '🪳';
+    const isAnniversary = document.body.classList.contains('anniversary');
+
     const c1 = document.querySelector('.cockroach-1');
     const c2 = document.querySelector('.cockroach-2');
-    if (c1) c1.innerHTML = icon;
-    if (c2) c2.innerHTML = icon;
+
+    if (isHalloween) {
+        // Tema Halloween: morcegos
+        const icon = '🦇';
+        if (c1) c1.innerHTML = icon;
+        if (c2) c2.innerHTML = icon;
+    } else if (isAnniversary) {
+        // Tema Aniversário: coração vermelho e coração preto
+        if (c1) c1.innerHTML = '❤️'; // Coração vermelho
+        if (c2) c2.innerHTML = '🖤'; // Coração preto
+    } else {
+        // Tema Clássico: baratinhas
+        const icon = '🪳';
+        if (c1) c1.innerHTML = icon;
+        if (c2) c2.innerHTML = icon;
+    }
+
     // também atualizar os aleatórios existentes
+    let randomIcon = '🪳';
+    if (isHalloween) {
+        randomIcon = '🦇';
+    } else if (isAnniversary) {
+        randomIcon = '❤️'; // Para extras, usar coração vermelho
+    }
+
     document.querySelectorAll('.cockroach.random-cockroach, .cockroach.special-cockroach').forEach(el => {
-        el.innerHTML = icon;
+        el.innerHTML = randomIcon;
     });
 }
 

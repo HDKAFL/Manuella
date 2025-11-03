@@ -60,6 +60,14 @@ const halloweenMusic = {
     volume: CONFIG.AUDIO.halloweenMusicVolume
 };
 
+// Música de Aniversário
+const anniversaryMusic = {
+    name: "I Was Made For Lovin' You",
+    file: `${CONFIG.PATHS.musicAnniversary}Kiss - I Was Made For Lovin' You [ZhIsAZO5gl0].mp3`,
+    startTime: CONFIG.AUDIO.anniversaryMusicStartTime,
+    volume: CONFIG.AUDIO.anniversaryMusicVolume
+};
+
 // Playlist expandida com música de Halloween
 const halloweenPlaylistItem = {
     title: "Creepy Music Box (Dark Music)",
@@ -68,10 +76,23 @@ const halloweenPlaylistItem = {
     duration: "∞"
 };
 
-// Função para obter a playlist baseada na data
+// Playlist expandida com música de Aniversário
+const anniversaryPlaylistItem = {
+    title: "I Was Made For Lovin' You",
+    artist: "Kiss",
+    file: anniversaryMusic.file,
+    duration: "4:00"
+};
+
+// Função para obter a playlist baseada na data e tema
 function getActivePlaylist() {
-    const isHalloween = isHalloweenDate();
-    if (isHalloween) {
+    const isHalloween = typeof isHalloweenDate === 'function' ? isHalloweenDate() : false;
+    const isAnniversary = document.body.classList.contains('anniversary');
+
+    if (isAnniversary) {
+        // Durante Aniversário: música de aniversário primeiro, depois as outras
+        return [anniversaryPlaylistItem, ...playlist];
+    } else if (isHalloween) {
         // Durante Halloween: música de Halloween primeiro, depois as outras
         return [halloweenPlaylistItem, ...playlist];
     }
@@ -291,6 +312,7 @@ function renderPlaylist() {
 window.playlist = playlist;
 window.manuellaMusic = manuellaMusic;
 window.halloweenMusic = halloweenMusic;
+window.anniversaryMusic = anniversaryMusic;
 window.currentTrackIndex = currentTrackIndex;
 window.isPlaying = isPlaying;
 window.audio = audio;
