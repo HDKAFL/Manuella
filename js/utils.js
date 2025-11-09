@@ -1,5 +1,7 @@
 // Funções utilitárias
 
+let currentActiveTab = 'carta';
+
 function formatTime(seconds) {
     if (isNaN(seconds)) return "0:00";
     const mins = Math.floor(seconds / 60);
@@ -11,7 +13,7 @@ function formatTime(seconds) {
 function applyTabVisualTheme(tabName) {
     // Remover classes de tema visual das abas
     document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('visual-theme-halloween', 'visual-theme-anniversary');
+        tab.classList.remove('visual-theme-halloween', 'visual-theme-anniversary', 'visual-theme-matinho');
     });
 
     // Aplicar tema visual baseado na aba
@@ -21,6 +23,8 @@ function applyTabVisualTheme(tabName) {
             selectedTab.classList.add('visual-theme-halloween');
         } else if (tabName === 'anniversary') {
             selectedTab.classList.add('visual-theme-anniversary');
+        } else if (tabName === 'matinho') {
+            selectedTab.classList.add('visual-theme-matinho');
         }
     }
 }
@@ -66,6 +70,127 @@ function showTab(tabName) {
         updateAnniversaryStats();
     }
 
+    handleTabThemeAndMusic(tabName);
+    currentActiveTab = tabName;
+
+}
+
+function handleTabThemeAndMusic(tabName) {
+    if (typeof applyTheme !== 'function') return;
+
+    const themeByTab = {
+        halloween: 'halloween',
+        anniversary: 'anniversary',
+        matinho: 'matinho',
+        carta: 'classic',
+        musicas: 'classic'
+    };
+
+    const targetTheme = themeByTab[tabName] || 'classic';
+    const themeChanged = applyTheme(targetTheme, { skipPersist: true });
+
+    if (themeChanged && typeof renderPlaylist === 'function') {
+        renderPlaylist();
+    }
+
+    const musicConfig = resolveMusicForTheme(targetTheme);
+    ensureMusicState(musicConfig, {
+        themeChanged,
+        preservePlaybackState: targetTheme === 'classic'
+    });
+}
+
+function resolveMusicForTheme(themeKey) {
+    switch (themeKey) {
+        case 'halloween':
+            return window.halloweenMusic || window.manuellaMusic;
+        case 'anniversary':
+            return window.anniversaryMusic || window.manuellaMusic;
+        case 'matinho':
+            return window.forestMusic || window.manuellaMusic;
+        default:
+            return window.manuellaMusic;
+    }
+}
+
+function ensureMusicState(musicConfig, options = {}) {
+    if (typeof getActivePlaylist !== 'function' || typeof loadTrack !== 'function') return;
+
+    if (!window.audio) {
+        window.audio = document.getElementById('audio-player');
+    }
+
+    const audioElement = window.audio;
+    const audioSource = document.getElementById('audioSource');
+    if (!audioElement || !audioSource) return;
+
+    const wasPlaying = !!window.isPlaying;
+    const targetFile = musicConfig.file;
+    const currentSrc = audioSource.getAttribute('src') || '';
+    const needsLoad = !currentSrc || !currentSrc.endsWith(targetFile);
+
+    if (needsLoad) {
+        const playlistItems = getActivePlaylist();
+        let targetIndex = playlistItems.findIndex(track => track.file === targetFile);
+        if (targetIndex === -1) {
+            targetIndex = 0;
+        }
+
+        window.currentTrackIndex = targetIndex;
+        loadTrack(targetIndex);
+        markPlaylistActive(targetIndex);
+    } else {
+        markPlaylistActive(window.currentTrackIndex || 0);
+    }
+
+    if (typeof musicConfig.startTime === 'number' && musicConfig.startTime > 0 && audioElement.currentTime < musicConfig.startTime) {
+        audioElement.currentTime = musicConfig.startTime;
+    }
+
+    if (typeof musicConfig.volume === 'number') {
+        audioElement.volume = musicConfig.volume;
+    }
+
+    const shouldPreserve = options.preservePlaybackState;
+    const shouldForcePlay = options.themeChanged && !shouldPreserve;
+    let shouldPlay = wasPlaying;
+
+    if (shouldForcePlay) {
+        shouldPlay = true;
+    }
+
+    if (shouldPreserve && !wasPlaying) {
+        shouldPlay = false;
+    }
+
+    if (shouldPlay) {
+        audioElement.play().then(() => {
+            window.isPlaying = true;
+            const mainPlayBtn = document.getElementById('mainPlayBtn');
+            if (mainPlayBtn) mainPlayBtn.innerHTML = "⏸️";
+            if (typeof startVisualEffect === 'function') startVisualEffect();
+            if (typeof updateFloatingButton === 'function') updateFloatingButton();
+        }).catch(() => {
+            // ignorar erros de autoplay
+        });
+    } else {
+        window.isPlaying = wasPlaying;
+        if (!wasPlaying && typeof stopVisualEffect === 'function') {
+            stopVisualEffect();
+        }
+        if (typeof updateFloatingButton === 'function') updateFloatingButton();
+    }
+}
+
+function markPlaylistActive(index) {
+    const playlistItems = document.querySelectorAll('.playlist-item');
+    playlistItems.forEach((item, i) => {
+        if (i === index) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
+    });
 }
 
 // Função de compatibilidade que usa a agenda centralizada de temas

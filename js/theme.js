@@ -4,20 +4,29 @@ const themeRegistry = {
         key: 'classic',
         label: '🌙 Tema Clássico',
         dataTheme: '',
-        addBodyClass: false
+        addBodyClass: false,
+        bodyClass: ''
     },
     halloween: {
         key: 'halloween',
         label: '🎃 Tema de Halloween',
         dataTheme: 'halloween',
-        addBodyClass: true
+        addBodyClass: true,
+        bodyClass: 'halloween'
     },
     anniversary: {
         key: 'anniversary',
         label: '💕 Tema de 1 Mês',
         dataTheme: 'anniversary',
         addBodyClass: true,
-        anniversaryClass: 'anniversary'
+        bodyClass: 'anniversary'
+    },
+    matinho: {
+        key: 'matinho',
+        label: '🌿🍃 Matinho Encantado 🍃🌿',
+        dataTheme: 'matinho',
+        addBodyClass: true,
+        bodyClass: 'matinho'
     }
 };
 
@@ -25,6 +34,13 @@ let currentTheme = 'classic';
 
 function applyTheme(themeName, options = {}) {
     const theme = themeRegistry[themeName] || themeRegistry.classic;
+    const previousTheme = currentTheme;
+    const shouldUpdate = options.force || previousTheme !== theme.key;
+
+    if (!shouldUpdate) {
+        return false;
+    }
+
     currentTheme = theme.key;
 
     // data-theme para CSS por variáveis
@@ -36,14 +52,10 @@ function applyTheme(themeName, options = {}) {
 
     // Compat: classe .halloween já usada nos estilos existentes
     // Remover todas as classes de tema primeiro
-    document.body.classList.remove('halloween', 'anniversary');
+    document.body.classList.remove('halloween', 'anniversary', 'matinho');
 
-    if (theme.addBodyClass) {
-        if (theme.anniversaryClass) {
-            document.body.classList.add('anniversary');
-        } else {
-            document.body.classList.add('halloween');
-        }
+    if (theme.addBodyClass && theme.bodyClass) {
+        document.body.classList.add(theme.bodyClass);
     }
 
     // UI dependente do tema
@@ -53,7 +65,11 @@ function applyTheme(themeName, options = {}) {
             createHalloweenCharacters();
             // NÃO focar automaticamente na aba Halloween - deixar usuário navegar
         } else {
-            charactersContainer.innerHTML = '';
+            if (typeof clearHalloweenCharacters === 'function') {
+                clearHalloweenCharacters();
+            } else {
+                charactersContainer.innerHTML = '';
+            }
         }
     }
 
@@ -66,9 +82,18 @@ function applyTheme(themeName, options = {}) {
     const btn = document.getElementById('themeToggleBtn');
     if (btn) {
         btn.textContent = theme.label;
-        // Ocultar botão em datas comemorativas (Halloween e Aniversário)
-        const isCommemorativeDate = (theme.key === 'halloween' || theme.key === 'anniversary');
-        btn.style.display = isCommemorativeDate ? 'none' : 'inline-block';
+        btn.classList.remove('matinho-active');
+
+        if (theme.key === 'matinho') {
+            btn.classList.add('matinho-active');
+        }
+
+        // Ocultar botão apenas quando estivermos na data de um evento agendado
+        const today = new Date();
+        const isCommemorativeDateActive = isThemeDate('halloween', today)
+            || isThemeDate('anniversary', today)
+            || isThemeDate('matinho', today);
+        btn.style.display = isCommemorativeDateActive ? 'none' : 'inline-block';
     }
 
     // Botão de imagens flutuantes apenas no Halloween (não no aniversário)
@@ -89,53 +114,18 @@ function applyTheme(themeName, options = {}) {
     // Atualizar elementos de aniversário
     updateAnniversaryElements();
 
-    // Re-renderizar playlist para incluir/remover música de Halloween/Aniversário
-    if (typeof renderPlaylist === 'function') {
-        renderPlaylist();
-    }
-
-    // Se for tema de aniversário e a música estiver disponível, tocar automaticamente
-    if (theme.key === 'anniversary' && typeof selectTrack === 'function') {
-        // Resetar índice para a primeira música (que será a de aniversário na playlist)
-        setTimeout(() => {
-            if (typeof getActivePlaylist === 'function') {
-                const activePlaylist = getActivePlaylist();
-                // A primeira música sempre será a de aniversário quando o tema estiver ativo
-                if (activePlaylist.length > 0 && activePlaylist[0].title === "I Was Made For Lovin' You") {
-                    // Resetar o índice de track para 0 (música de aniversário)
-                    if (typeof window !== 'undefined') {
-                        window.currentTrackIndex = 0;
-                    }
-                    selectTrack(0);
-                    // Tentar tocar automaticamente após carregar a track
-                    setTimeout(() => {
-                        if (typeof window !== 'undefined' && window.audio) {
-                            window.audio.play().then(() => {
-                                if (typeof window !== 'undefined') {
-                                    window.isPlaying = true;
-                                    if (typeof updateFloatingButton === 'function') {
-                                        updateFloatingButton();
-                                    }
-                                }
-                            }).catch(() => {
-                                // Ignorar erro se não conseguir tocar automaticamente (autoplay policy)
-                            });
-                        }
-                    }, 800);
-                }
-            }
-        }, 500);
-    }
-
     // Persistir
     if (!options.skipPersist) {
         try { localStorage.setItem('theme', theme.key); } catch (e) { }
     }
+
+    return true;
 }
 
 // Agenda de temas por datas (prioridade maior vence)
 const themeSchedule = [
     { id: 'halloween', month: 10, dayStart: 31, dayEnd: 31, theme: 'halloween', priority: 90 },
+    { id: 'matinho-nov', month: 11, dayStart: 1, dayEnd: 30, theme: 'matinho', priority: 80 },
     // Tema de aniversário no dia 3 de todo mês
     { id: 'anniversary-jan', month: 1, dayStart: 3, dayEnd: 3, theme: 'anniversary', priority: 95 },
     { id: 'anniversary-feb', month: 2, dayStart: 3, dayEnd: 3, theme: 'anniversary', priority: 95 },
@@ -193,11 +183,14 @@ function isAfterHalloween() {
 
 // Alternância do Tema de Halloween
 function toggleHalloweenTheme() {
-    const themes = ['classic', 'halloween', 'anniversary'];
+    const themes = ['classic', 'halloween', 'anniversary', 'matinho'];
     const currentIndex = themes.indexOf(currentTheme);
     const nextIndex = (currentIndex + 1) % themes.length;
     const next = themes[nextIndex];
-    applyTheme(next);
+    const changed = applyTheme(next);
+    if (changed && typeof renderPlaylist === 'function') {
+        renderPlaylist();
+    }
     if (next === 'halloween') {
         for (let i = 0; i < 6; i++) setTimeout(() => createFloatingSpookyElement(), i * 250);
     } else if (next === 'anniversary') {
@@ -215,10 +208,13 @@ function toggleTheme() {
 function updateStaticGothicElements() {
     const isHalloweenTheme = document.body.classList.contains('halloween');
     const isAnniversaryTheme = document.body.classList.contains('anniversary');
+    const isMatinhoTheme = document.body.classList.contains('matinho');
 
     let set;
     if (isHalloweenTheme) {
         set = CONFIG.ANIMATION.halloweenEmojis;
+    } else if (isMatinhoTheme) {
+        set = CONFIG.ANIMATION.matinhoEmojis || CONFIG.ANIMATION.classicEmojis;
     } else if (isAnniversaryTheme) {
         set = CONFIG.ANIMATION.anniversaryEmojis || CONFIG.ANIMATION.classicEmojis;
     } else {

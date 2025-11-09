@@ -11,7 +11,8 @@ const CONFIG = {
         photosCat: 'photos-cat/',
         music: 'music/',
         musicHalloween: 'music-halloween/',
-        musicAnniversary: 'music-anniversary/'
+        musicAnniversary: 'music-anniversary/',
+        musicForest: 'music-florest/'
     },
 
     // ==========================================
@@ -23,7 +24,9 @@ const CONFIG = {
         halloweenMusicStartTime: 0,
         halloweenMusicVolume: 0.7,
         anniversaryMusicStartTime: 0,
-        anniversaryMusicVolume: 0.7
+        anniversaryMusicVolume: 0.7,
+        forestMusicStartTime: 0,
+        forestMusicVolume: 0.6
     },
 
     // ==========================================
@@ -50,7 +53,8 @@ const CONFIG = {
         gothicEmojis: ['🦇', '🌙', '🖤', '🌹', '⚰️', '🔮'],
         classicEmojis: ['🌕', '❤️', '🖤', '🌙', '💕', '🌚'],
         halloweenEmojis: ['🎃', '🦇', '👻', '🕷️', '🕯️', '🪦'],
-        anniversaryEmojis: ['💕', '💖', '💗', '🌹', '✨', '💝']
+        anniversaryEmojis: ['💕', '💖', '💗', '🌹', '✨', '💝'],
+        matinhoEmojis: ['🍃', '🌿', '🍀', '🪴', '🍄', '🦋', '🐸', '🦉']
     },
 
     // ==========================================

@@ -1,20 +1,37 @@
 // Funcionalidades de Halloween
 
+let halloweenCharacterTimeouts = [];
+let halloweenCharacterIntervals = [];
+
+function clearHalloweenCharacters() {
+    halloweenCharacterTimeouts.forEach(clearTimeout);
+    halloweenCharacterIntervals.forEach(clearInterval);
+    halloweenCharacterTimeouts = [];
+    halloweenCharacterIntervals = [];
+
+    const container = document.getElementById('halloweenCharacters');
+    if (container) {
+        container.innerHTML = '';
+    }
+}
+
 // Criar personagens de Halloween flutuando
 async function createHalloweenCharacters() {
     const container = document.getElementById('halloweenCharacters');
     if (!container) return;
-    if (!floatingImagesEnabled) { container.innerHTML = ''; return; }
 
-    // Limpar container antes de adicionar novos
-    container.innerHTML = '';
+    clearHalloweenCharacters();
+
+    if (!floatingImagesEnabled) {
+        return;
+    }
 
     // Validar e adicionar TODAS as imagens (não mais aleatórias)
     for (let index = 0; index < CONFIG.HALLOWEEN.characters.length; index++) {
         const char = CONFIG.HALLOWEEN.characters[index];
         const charPath = `${CONFIG.PATHS.photosHalloween}${char}`;
         
-        setTimeout(async () => {
+        const timeoutId = setTimeout(async () => {
             // Validar se personagem existe
             const exists = await validateAsset(charPath, char, 'image');
             
@@ -34,11 +51,14 @@ async function createHalloweenCharacters() {
 
                 // Fazer personagens se moverem pela tela
                 moveHalloweenCharacter(img);
-                setInterval(() => moveHalloweenCharacter(img), CONFIG.ANIMATION.moveInterval);
+                const intervalId = setInterval(() => moveHalloweenCharacter(img), CONFIG.ANIMATION.moveInterval);
+                halloweenCharacterIntervals.push(intervalId);
             } else {
                 // Personagem Halloween não encontrado, pulando
             }
         }, index * CONFIG.ANIMATION.characterDelay);
+
+        halloweenCharacterTimeouts.push(timeoutId);
     }
 }
 
@@ -84,8 +104,7 @@ function toggleFloatingImages() {
         } else {
             btn.classList.add('paused');
             btn.textContent = '🚫';
-            const container = document.getElementById('halloweenCharacters');
-            if (container) container.innerHTML = '';
+            clearHalloweenCharacters();
         }
     }
 }
@@ -95,4 +114,5 @@ window.createHalloweenCharacters = createHalloweenCharacters;
 window.moveHalloweenCharacter = moveHalloweenCharacter;
 window.createFloatingSpookyElement = createFloatingSpookyElement;
 window.toggleFloatingImages = toggleFloatingImages;
+window.clearHalloweenCharacters = clearHalloweenCharacters;
 

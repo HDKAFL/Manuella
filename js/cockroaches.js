@@ -38,11 +38,15 @@ function createRandomCockroach() {
     cockroach.className = 'cockroach random-cockroach';
     const isHalloween = document.body.classList.contains('halloween');
     const isAnniversary = document.body.classList.contains('anniversary');
+    const isMatinho = document.body.classList.contains('matinho');
     let icon = '🪳';
     if (isHalloween) {
         icon = '🦇';
     } else if (isAnniversary) {
         icon = '❤️'; // Coração vermelho para extras
+    } else if (isMatinho) {
+        const cats = ['😻'];
+        icon = cats[Math.floor(Math.random() * cats.length)];
     }
     cockroach.innerHTML = icon;
 
@@ -99,11 +103,15 @@ function createCockroachAt(x, y) {
     cockroach.className = 'cockroach special-cockroach';
     const isHalloween = document.body.classList.contains('halloween');
     const isAnniversary = document.body.classList.contains('anniversary');
+    const isMatinho = document.body.classList.contains('matinho');
     let icon = '🪳';
     if (isHalloween) {
         icon = '🦇';
     } else if (isAnniversary) {
         icon = '❤️'; // Coração vermelho para especiais
+    } else if (isMatinho) {
+        const cats = ['😻'];
+        icon = cats[Math.floor(Math.random() * cats.length)];
     }
     cockroach.innerHTML = icon;
 
@@ -136,6 +144,7 @@ function createCockroachAt(x, y) {
 function updateCockroachIcons() {
     const isHalloween = document.body.classList.contains('halloween');
     const isAnniversary = document.body.classList.contains('anniversary');
+    const isMatinho = document.body.classList.contains('matinho');
 
     const c1 = document.querySelector('.cockroach-1');
     const c2 = document.querySelector('.cockroach-2');
@@ -149,6 +158,9 @@ function updateCockroachIcons() {
         // Tema Aniversário: coração vermelho e coração preto
         if (c1) c1.innerHTML = '❤️'; // Coração vermelho
         if (c2) c2.innerHTML = '🖤'; // Coração preto
+    } else if (isMatinho) {
+        if (c1) c1.innerHTML = '😻';
+        if (c2) c2.innerHTML = '😻';
     } else {
         // Tema Clássico: baratinhas
         const icon = '🪳';
@@ -162,6 +174,9 @@ function updateCockroachIcons() {
         randomIcon = '🦇';
     } else if (isAnniversary) {
         randomIcon = '❤️'; // Para extras, usar coração vermelho
+    } else if (isMatinho) {
+        const cats = ['😻'];
+        randomIcon = cats[Math.floor(Math.random() * cats.length)];
     }
 
     document.querySelectorAll('.cockroach.random-cockroach, .cockroach.special-cockroach').forEach(el => {

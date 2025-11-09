@@ -78,7 +78,6 @@ body[data-theme="anniversary"] {
   --star-color: #ffc1e0;
 }
 
-
 body {
   font-family: "Times New Roman", serif;
   background: linear-gradient(
@@ -259,7 +258,8 @@ body.anniversary #anniversaryElements {
 }
 
 @keyframes floatHeart {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) translateX(0px) rotate(0deg);
     opacity: 0.7;
   }
@@ -298,10 +298,21 @@ body.anniversary::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
-    radial-gradient(circle at 30% 40%, rgba(255, 107, 181, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 70% 60%, rgba(212, 116, 154, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 50% 20%, rgba(255, 193, 224, 0.1) 0%, transparent 50%);
+  background-image: radial-gradient(
+      circle at 30% 40%,
+      rgba(255, 107, 181, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 70% 60%,
+      rgba(212, 116, 154, 0.12) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 50% 20%,
+      rgba(255, 193, 224, 0.1) 0%,
+      transparent 50%
+    );
   pointer-events: none;
   z-index: 0;
   animation: romanticGlow 5s ease-in-out infinite alternate;
@@ -978,7 +989,14 @@ body.anniversary .entry-button:hover {
 }
 
 body.anniversary .entry-screen {
-  background: linear-gradient(135deg, #2d1b4e 0%, #4a2c6a 25%, #6b3d8a 50%, #8b4da8 75%, #d4749a 100%);
+  background: linear-gradient(
+    135deg,
+    #2d1b4e 0%,
+    #4a2c6a 25%,
+    #6b3d8a 50%,
+    #8b4da8 75%,
+    #d4749a 100%
+  );
 }
 
 body.anniversary .entry-title,
@@ -2334,7 +2352,8 @@ body.anniversary .entry-subtitle {
 .anniversary-title {
   font-size: 2.5em;
   color: #ff6bb5;
-  text-shadow: 0 0 30px rgba(255, 107, 181, 0.8), 0 0 50px rgba(255, 107, 181, 0.5);
+  text-shadow: 0 0 30px rgba(255, 107, 181, 0.8),
+    0 0 50px rgba(255, 107, 181, 0.5);
   text-align: center;
   margin: 30px 0 20px;
   font-weight: bold;
@@ -2780,4 +2799,938 @@ body::after {
   50% {
     opacity: 0.3;
   }
+}
+
+/* Switch de Declarações */
+.declaration-switch {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 30px 0;
+  padding: 0;
+}
+
+.switch-btn {
+  background: rgba(45, 27, 78, 0.85);
+  border: 2px solid rgba(255, 107, 181, 0.5);
+  color: #ffc1e0;
+  padding: 12px 35px;
+  border-radius: 25px;
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 5px 15px rgba(255, 107, 181, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.switch-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 107, 181, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.switch-btn:hover::before {
+  left: 100%;
+}
+
+.switch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 107, 181, 0.5);
+  background: rgba(255, 107, 181, 0.2);
+}
+
+.switch-btn.active {
+  background: linear-gradient(45deg, #ff6bb5, #d4749a);
+  border-color: #ff6bb5;
+  color: #fff;
+  box-shadow: 0 0 25px rgba(255, 107, 181, 0.8),
+    inset 0 0 20px rgba(255, 255, 255, 0.1);
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.switch-btn.active:hover {
+  background: linear-gradient(45deg, #d4749a, #ff6bb5);
+  box-shadow: 0 0 30px rgba(255, 107, 181, 1),
+    inset 0 0 25px rgba(255, 255, 255, 0.15);
+}
+
+.anniversary-declaration {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+/* Matinho da Manu */
+.tab-content.visual-theme-matinho {
+  background: linear-gradient(
+      160deg,
+      rgba(10, 45, 22, 0.92),
+      rgba(16, 66, 32, 0.85)
+    ),
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(84, 191, 120, 0.15),
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 80% 10%,
+      rgba(64, 160, 100, 0.18),
+      transparent 55%
+    );
+  border: 2px solid rgba(88, 190, 120, 0.5);
+  box-shadow: 0 0 50px rgba(34, 120, 72, 0.4);
+}
+
+.matinho-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 45px;
+  background: linear-gradient(
+    140deg,
+    rgba(12, 36, 24, 0.92),
+    rgba(18, 48, 33, 0.9)
+  );
+  border: 2px solid rgba(118, 222, 150, 0.45);
+  border-radius: 28px;
+  box-shadow: 0 25px 60px rgba(10, 35, 22, 0.75);
+  position: relative;
+  overflow: hidden;
+}
+
+.matinho-section::before,
+.matinho-section::after {
+  content: none;
+}
+
+.matinho-title {
+  text-align: center;
+  font-size: 2.4em;
+  color: #9efaca;
+  text-shadow: 0 0 30px rgba(158, 245, 199, 0.95);
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.matinho-subtitle {
+  text-align: center;
+  font-size: 1.25em;
+  color: #d9ffe9;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
+  font-style: italic;
+  text-shadow: 0 0 18px rgba(130, 230, 170, 0.6);
+}
+
+.matinho-highlights {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  position: relative;
+  z-index: 1;
+}
+
+.matinho-card {
+  background: linear-gradient(
+    150deg,
+    rgba(18, 50, 33, 0.92),
+    rgba(24, 70, 42, 0.88)
+  );
+  border: 1px solid rgba(118, 222, 150, 0.45);
+  border-radius: 20px;
+  padding: 28px;
+  box-shadow: 0 18px 38px rgba(12, 40, 25, 0.55);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.matinho-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 55px rgba(10, 35, 22, 0.7);
+}
+
+.matinho-card h3 {
+  color: #a9ffd6;
+  margin-bottom: 18px;
+  text-shadow: 0 0 18px rgba(160, 255, 210, 0.85);
+  font-size: 1.35em;
+}
+
+.matinho-card p {
+  color: #e2ffe9;
+  line-height: 1.75;
+  font-size: 1.08em;
+}
+
+.matinho-memory {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  margin: 50px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.matinho-memory-text {
+  background: linear-gradient(
+    155deg,
+    rgba(12, 32, 21, 0.9),
+    rgba(18, 48, 30, 0.88)
+  );
+  border-radius: 22px;
+  padding: 35px;
+  border: 1px solid rgba(136, 230, 168, 0.45);
+  box-shadow: inset 0 0 35px rgba(78, 210, 130, 0.2);
+}
+
+.matinho-memory-text h3 {
+  color: #a3ffd8;
+  margin-bottom: 22px;
+  font-size: 1.45em;
+}
+
+.matinho-memory-text p {
+  color: #eafff1;
+  line-height: 1.85;
+  margin-bottom: 20px;
+  font-size: 1.08em;
+}
+
+.matinho-memory-card {
+  background: linear-gradient(
+    160deg,
+    rgba(18, 44, 30, 0.92),
+    rgba(26, 74, 48, 0.9)
+  );
+  border-radius: 22px;
+  padding: 28px;
+  border: 1px solid rgba(128, 235, 175, 0.4);
+  box-shadow: 0 18px 42px rgba(12, 38, 24, 0.65);
+}
+
+.matinho-memory-card h4 {
+  color: #a9ffd6;
+  margin-bottom: 18px;
+  font-size: 1.25em;
+}
+
+.matinho-memory-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.matinho-memory-card li {
+  color: #e5ffed;
+  margin-bottom: 14px;
+  padding-left: 28px;
+  position: relative;
+  line-height: 1.7;
+}
+
+.matinho-memory-card li::before {
+  content: "🌿";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.matinho-poem {
+  background: linear-gradient(
+    150deg,
+    rgba(18, 54, 36, 0.95),
+    rgba(8, 30, 18, 0.92)
+  );
+  border: 1px solid rgba(128, 235, 175, 0.45);
+  border-radius: 22px;
+  padding: 35px;
+  margin: 55px 0;
+  text-align: center;
+  color: #edfff5;
+  font-size: 1.12em;
+  line-height: 1.9;
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 0 22px rgba(140, 235, 185, 0.5);
+}
+
+.matinho-signature {
+  text-align: center;
+  color: #a5ffd8;
+  font-size: 1.25em;
+  margin-top: 35px;
+  position: relative;
+  z-index: 1;
+}
+
+.matinho-signature p {
+  margin: 10px 0;
+  text-shadow: 0 0 18px rgba(158, 245, 199, 0.75);
+}
+
+body.matinho {
+  background: linear-gradient(
+      180deg,
+      rgba(6, 22, 12, 0.95),
+      rgba(4, 14, 8, 0.98)
+    ),
+    radial-gradient(circle at 15% 20%, rgba(50, 120, 70, 0.25), transparent 60%),
+    radial-gradient(circle at 85% 25%, rgba(64, 150, 90, 0.2), transparent 55%);
+  color: #f0fff6;
+}
+
+.theme-toggle.matinho-active {
+  background: linear-gradient(45deg, #2e7d47, #5fd887, #a4ffce);
+  color: #062312;
+  text-shadow: 0 0 14px rgba(224, 255, 239, 0.8);
+}
+
+@media (max-width: 768px) {
+  .anniversary-content p {
+    font-size: 1em;
+    line-height: 1.7;
+  }
+
+  .declaration-switch {
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .switch-btn {
+    padding: 10px 25px;
+    font-size: 0.95em;
+  }
+
+  .matinho-section {
+    padding: 35px 25px;
+  }
+
+  .matinho-memory {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .music-section {
+    padding: 0 10px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .declaration-switch {
+    gap: 8px;
+    margin: 25px 0;
+  }
+
+  .switch-btn {
+    padding: 10px 20px;
+    font-size: 0.9em;
+  }
+
+  .matinho-highlights {
+    grid-template-columns: 1fr;
+  }
+
+  .matinho-poem {
+    font-size: 1em;
+    padding: 25px 15px;
+  }
+
+  .matinho-section {
+    padding: 25px 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .video-message {
+    padding: 15px 12px;
+  }
+
+  .video-message p {
+    font-size: 0.95em;
+  }
+
+  .matinho-title {
+    font-size: 1.7em;
+  }
+
+  .matinho-subtitle {
+    font-size: 1.1em;
+  }
+}
+
+body.anniversary .footer p {
+  color: #ffc1e0;
+}
+
+body.matinho .main-title,
+body.matinho .footer-info p:first-child,
+body.matinho .playlist-item-number,
+body.matinho .section-title,
+body.matinho .entry-title,
+body.matinho .entry-title-mobile {
+  color: #9ef5c7;
+  text-shadow: 0 0 20px rgba(142, 245, 197, 0.85);
+}
+
+body.matinho .subtitle,
+body.matinho .section-subtitle,
+body.matinho .playlist-item-title,
+body.matinho .playlist-item-duration,
+body.matinho .track-artist,
+body.matinho .footer p {
+  color: #d8ffe9;
+}
+
+body.matinho .love-message,
+body.matinho .music-player,
+body.matinho .playlist,
+body.matinho .custom-music-player,
+body.matinho .photo-gallery {
+  border-color: rgba(118, 222, 150, 0.4);
+  box-shadow: 0 12px 35px rgba(40, 120, 78, 0.25),
+    inset 0 0 20px rgba(118, 222, 150, 0.12);
+}
+
+body.matinho .control-btn,
+body.matinho .floating-music-btn,
+body.matinho .entry-button,
+body.matinho .tab-btn.active {
+  background: linear-gradient(45deg, #2f8f5b, #5fd887, #a4ffcf);
+  color: #062312;
+  box-shadow: 0 0 18px rgba(118, 222, 150, 0.6);
+}
+
+body.matinho .tab-btn {
+  border-color: rgba(118, 222, 150, 0.35);
+}
+
+body.matinho .footer {
+  background: linear-gradient(
+    140deg,
+    rgba(10, 45, 22, 0.88),
+    rgba(18, 62, 34, 0.85)
+  );
+  border-top: 2px solid rgba(118, 222, 150, 0.45);
+  box-shadow: 0 -15px 40px rgba(20, 60, 38, 0.4);
+}
+
+body.matinho .footer-divider {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(118, 222, 150, 0.6),
+    transparent
+  );
+}
+
+body.matinho .footer-info,
+body.matinho .footer-music,
+body.matinho .footer-date,
+body.matinho .footer-beginning,
+body.matinho .footer-first-love,
+body.matinho .footer-relationship {
+  background: rgba(20, 55, 35, 0.6);
+  border: 1px solid rgba(118, 222, 150, 0.4);
+}
+
+body.matinho .footer-info:hover,
+body.matinho .footer-music:hover,
+body.matinho .footer-date:hover,
+body.matinho .footer-beginning:hover,
+body.matinho .footer-first-love:hover,
+body.matinho .footer-relationship:hover {
+  background: rgba(28, 82, 52, 0.75);
+  box-shadow: 0 8px 20px rgba(22, 60, 38, 0.35);
+}
+
+body.matinho .footer-info p,
+body.matinho .footer-music p,
+body.matinho .footer-date p,
+body.matinho .footer-beginning p,
+body.matinho .footer-first-love p,
+body.matinho .footer-relationship p,
+body.matinho .footer-bottom p {
+  color: #d8ffe9;
+  text-shadow: 0 0 10px rgba(118, 222, 150, 0.4);
+}
+
+body.matinho .footer-info p:first-child,
+body.matinho .footer-music p:first-child,
+body.matinho .footer-date p:first-child,
+body.matinho .footer-beginning p:first-child,
+body.matinho .footer-first-love p:first-child,
+body.matinho .footer-relationship p:first-child {
+  color: #9ef5c7;
+  text-shadow: 0 0 18px rgba(142, 245, 197, 0.85);
+}
+
+.forest-scene {
+  position: relative;
+  width: 100%;
+  height: clamp(260px, 55vw, 520px);
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow: inset 0 0 40px rgba(6, 22, 12, 0.8);
+}
+
+.forest-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.forest-backdrop img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  animation-duration: 16s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+
+.forest-backdrop-day {
+  animation-name: forestDayCycle;
+  animation-delay: 0s;
+}
+
+.forest-backdrop-night {
+  animation-name: forestNightCycle;
+  animation-delay: 0s;
+}
+
+@keyframes forestDayCycle {
+  0% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  95% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes forestNightCycle {
+  0% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.forest-background {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  z-index: 1;
+}
+
+.forest-layer {
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat-x;
+  opacity: 0.9;
+  z-index: 2;
+}
+
+.forest-layer.trees-back {
+  background-image: none;
+}
+
+.forest-layer.trees-middle {
+  background-image: none;
+}
+
+.forest-layer.trees-front {
+  background-image: none;
+}
+
+.forest-elements {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+}
+
+.forest-critters {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.forest-owl {
+  position: absolute;
+  top: 12%;
+  left: 18%;
+  font-size: 42px;
+  animation: forestFloat 6s ease-in-out infinite;
+  text-shadow: 0 0 20px rgba(120, 220, 150, 0.5);
+}
+
+.forest-butterflies {
+  position: absolute;
+  top: 22%;
+  right: 20%;
+  display: flex;
+  gap: 12px;
+}
+
+.forest-butterflies span {
+  font-size: 32px;
+  animation: forestButterfly 5s ease-in-out infinite;
+}
+
+.forest-butterflies span:nth-child(2) {
+  animation-delay: 1s;
+}
+
+.forest-butterflies span:nth-child(3) {
+  animation-delay: 2s;
+}
+
+@keyframes forestButterfly {
+  0% {
+    transform: translate(-10px, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(10px, -20px) rotate(10deg);
+  }
+  100% {
+    transform: translate(-10px, 0) rotate(0deg);
+  }
+}
+
+.forest-fox {
+  position: absolute;
+  bottom: 22%;
+  left: 10%;
+  font-size: 48px;
+  animation: forestWiggle 7s ease-in-out infinite;
+}
+
+.forest-bunny {
+  position: absolute;
+  bottom: 18%;
+  right: 18%;
+  font-size: 40px;
+  animation: forestWiggle 6.5s ease-in-out infinite reverse;
+}
+
+.forest-deer {
+  position: absolute;
+  bottom: 40%;
+  right: 50%;
+  transform: translateX(50%);
+  font-size: 52px;
+  animation: forestWiggle 8s ease-in-out infinite;
+}
+
+.forest-frog {
+  position: absolute;
+  bottom: 18%;
+  left: 38%;
+  font-size: 38px;
+  animation: forestFloat 5.5s ease-in-out infinite;
+}
+
+@keyframes forestFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes forestWiggle {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(8px);
+  }
+}
+
+.forest-glow {
+  position: absolute;
+  inset: 40% 25% 20% 25%;
+  background: radial-gradient(
+    circle,
+    rgba(80, 200, 130, 0.35) 0%,
+    transparent 70%
+  );
+  filter: blur(15px);
+  animation: forestGlow 6s ease-in-out infinite;
+  z-index: 4;
+}
+
+@keyframes forestGlow {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.forest-path {
+  position: absolute;
+  inset: auto 20% 5% 20%;
+  height: 90px;
+  background: transparent;
+  overflow: hidden;
+  z-index: 4;
+}
+
+.fireflies {
+  position: absolute;
+  inset: 0;
+}
+
+.fireflies span {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(173, 255, 189, 0.85);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(173, 255, 189, 0.9);
+  animation: firefly 5s linear infinite;
+}
+
+.fireflies span:nth-child(1) {
+  top: 25%;
+  left: 20%;
+  animation-delay: 0s;
+}
+
+.fireflies span:nth-child(2) {
+  top: 45%;
+  left: 60%;
+  animation-delay: 1s;
+}
+
+.fireflies span:nth-child(3) {
+  top: 20%;
+  left: 80%;
+  animation-delay: 2s;
+}
+
+.fireflies span:nth-child(4) {
+  top: 60%;
+  left: 35%;
+  animation-delay: 3s;
+}
+
+.fireflies span:nth-child(5) {
+  top: 40%;
+  left: 10%;
+  animation-delay: 4s;
+}
+
+@keyframes firefly {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translate(20px, -15px);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-10px, -5px);
+    opacity: 0.2;
+  }
+}
+
+.forest-details {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.forest-lovers {
+  position: absolute;
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #d8ffe9;
+  text-shadow: 0 0 15px rgba(118, 222, 150, 0.6);
+  z-index: 5;
+}
+
+.forest-heart {
+  font-size: 42px;
+  animation: forestHeart 3s ease-in-out infinite;
+}
+
+@keyframes forestHeart {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.matinho-text {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #eafff5;
+  width: 100%;
+}
+
+.matinho-text h2 {
+  font-size: 2.2em;
+  text-align: center;
+  color: #9ef5c7;
+  text-shadow: 0 0 20px rgba(158, 245, 199, 0.85);
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.matinho-text p {
+  font-size: 1.1em;
+  line-height: 1.8;
+  text-shadow: 0 0 12px rgba(40, 100, 70, 0.45);
+  margin-bottom: 12px;
+}
+
+.matinho-panels {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.matinho-panel {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.matinho-panel h3 {
+  font-size: 1.3em;
+  color: #9efacd;
+  margin-bottom: 12px;
+  text-shadow: 0 0 15px rgba(158, 245, 199, 0.75);
+}
+
+.matinho-panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.matinho-panel li {
+  position: relative;
+  padding-left: 28px;
+  font-size: 1.05em;
+  line-height: 1.6;
+  margin-bottom: 4px;
+}
+
+.matinho-panel li::before {
+  content: "🍃";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.matinho-message {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0 6px;
+  text-align: center;
+  box-shadow: none;
+}
+
+.matinho-signature {
+  margin-top: 8px;
+  font-size: 1.15em;
+  color: #9ef5c7;
+  text-shadow: 0 0 18px rgba(158, 245, 199, 0.75);
+}
+
+@media (max-width: 768px) {
+  .matinho-text h2 {
+    font-size: 1.8em;
+  }
+
+  .matinho-panel {
+    padding: 22px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .matinho-text h2 {
+    font-size: 1.6em;
+  }
+
+  .matinho-text p {
+    font-size: 1em;
+  }
+}
+
+.matinho-photo {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+  padding: 10px;
+}
+
+.matinho-photo img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 10px 28px rgba(8, 22, 12, 0.45);
 }

@@ -68,6 +68,14 @@ const anniversaryMusic = {
     volume: CONFIG.AUDIO.anniversaryMusicVolume
 };
 
+// Música do Matinho da Manu
+const forestMusic = {
+    name: "Nature Background",
+    file: `${CONFIG.PATHS.musicForest}1-Minute Nature Background Sound [DeHUFsrCYr0].mp3`,
+    startTime: CONFIG.AUDIO.forestMusicStartTime,
+    volume: CONFIG.AUDIO.forestMusicVolume || CONFIG.AUDIO.defaultVolume
+};
+
 // Playlist expandida com música de Halloween
 const halloweenPlaylistItem = {
     title: "Creepy Music Box (Dark Music)",
@@ -84,18 +92,33 @@ const anniversaryPlaylistItem = {
     duration: "4:00"
 };
 
+// Playlist do Matinho da Manu
+const forestPlaylistItem = {
+    title: "Nature Background",
+    artist: "Matinho da Manu",
+    file: forestMusic.file,
+    duration: "1:00"
+};
+
 // Função para obter a playlist baseada na data e tema
 function getActivePlaylist() {
-    const isHalloween = typeof isHalloweenDate === 'function' ? isHalloweenDate() : false;
-    const isAnniversary = document.body.classList.contains('anniversary');
+    const isMatinho = document.body.classList.contains('matinho');
+    const isAnniversaryTheme = document.body.classList.contains('anniversary');
+    const isHalloweenTheme = document.body.classList.contains('halloween');
+    const isHalloweenScheduled = typeof isHalloweenDate === 'function' ? isHalloweenDate() : false;
 
-    if (isAnniversary) {
-        // Durante Aniversário: música de aniversário primeiro, depois as outras
+    if (isMatinho) {
+        return [forestPlaylistItem];
+    }
+
+    if (isAnniversaryTheme) {
         return [anniversaryPlaylistItem, ...playlist];
-    } else if (isHalloween) {
-        // Durante Halloween: música de Halloween primeiro, depois as outras
+    }
+
+    if (isHalloweenTheme || isHalloweenScheduled) {
         return [halloweenPlaylistItem, ...playlist];
     }
+
     return playlist;
 }
 
@@ -313,6 +336,7 @@ window.playlist = playlist;
 window.manuellaMusic = manuellaMusic;
 window.halloweenMusic = halloweenMusic;
 window.anniversaryMusic = anniversaryMusic;
+window.forestMusic = forestMusic;
 window.currentTrackIndex = currentTrackIndex;
 window.isPlaying = isPlaying;
 window.audio = audio;

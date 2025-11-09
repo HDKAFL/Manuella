@@ -19,9 +19,15 @@ function stopVisualEffect() {
 function createFloatingGothicElement() {
     if (!floatingImagesEnabled) return;
     const isHalloweenTheme = document.body.classList.contains('halloween');
+    const isMatinhoTheme = document.body.classList.contains('matinho');
     const halloweenEmojisExtended = ["🎃", "🦇", "👻", "🕷️", "🕯️", "🧛", "🧟", "🩸", "🪦"];
     const classicEmojisExtended = ["🌕", "❤️", "🖤", "🌙", "💕", "🌚", "💖", "🌗", "🌔"];
-    const elements = isHalloweenTheme ? halloweenEmojisExtended : classicEmojisExtended;
+    const matinhoEmojisExtended = ["🍃", "🌿", "🍀", "🪴", "🍄", "🦋", "🐸", "🦉", "🌱"];
+    const elements = isHalloweenTheme
+        ? halloweenEmojisExtended
+        : isMatinhoTheme
+            ? matinhoEmojisExtended
+            : classicEmojisExtended;
     const randomElement = elements[Math.floor(Math.random() * elements.length)];
 
     const gothicElement = document.createElement("div");
@@ -29,7 +35,7 @@ function createFloatingGothicElement() {
     gothicElement.innerHTML = randomElement;
     gothicElement.style.position = "fixed";
     gothicElement.style.fontSize = "25px";
-    gothicElement.style.color = isHalloweenTheme ? "#ff6a00" : "#8b0000";
+    gothicElement.style.color = isHalloweenTheme ? "#ff6a00" : isMatinhoTheme ? "#6bff9a" : "#8b0000";
     gothicElement.style.pointerEvents = "none";
     gothicElement.style.zIndex = "1000";
     gothicElement.style.left = Math.random() * window.innerWidth + "px";
@@ -37,7 +43,9 @@ function createFloatingGothicElement() {
     gothicElement.style.animation = "float 6s ease-out forwards";
     gothicElement.style.filter = isHalloweenTheme
         ? "drop-shadow(0 0 10px rgba(255, 106, 0, 0.6))"
-        : "drop-shadow(0 0 10px rgba(139, 0, 0, 0.5))";
+        : isMatinhoTheme
+            ? "drop-shadow(0 0 12px rgba(90, 220, 140, 0.6))"
+            : "drop-shadow(0 0 10px rgba(139, 0, 0, 0.5))";
 
     document.body.appendChild(gothicElement);
 
@@ -85,7 +93,12 @@ function createStars() {
 // Função para renderizar elementos góticos estáticos
 function renderGothicElements() {
     const isHalloweenTheme = document.body.classList.contains('halloween');
-    const emojis = isHalloweenTheme ? CONFIG.ANIMATION.gothicEmojis : CONFIG.ANIMATION.classicEmojis;
+    const isMatinhoTheme = document.body.classList.contains('matinho');
+    const emojis = isHalloweenTheme
+        ? CONFIG.ANIMATION.halloweenEmojis
+        : isMatinhoTheme
+            ? CONFIG.ANIMATION.matinhoEmojis
+            : CONFIG.ANIMATION.classicEmojis;
     const positions = CONFIG.ANIMATION.gothicPositions;
     
     // Renderizar elementos da entrada (entry-gothic-element)
