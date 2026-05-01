@@ -27,6 +27,13 @@ const themeRegistry = {
         dataTheme: 'matinho',
         addBodyClass: true,
         bodyClass: 'matinho'
+    },
+    birthday: {
+        key: 'birthday',
+        label: '🎂 Aniversário da Manu',
+        dataTheme: 'birthday',
+        addBodyClass: true,
+        bodyClass: 'birthday'
     }
 };
 
@@ -52,7 +59,7 @@ function applyTheme(themeName, options = {}) {
 
     // Compat: classe .halloween já usada nos estilos existentes
     // Remover todas as classes de tema primeiro
-    document.body.classList.remove('halloween', 'anniversary', 'matinho');
+    document.body.classList.remove('halloween', 'anniversary', 'matinho', 'birthday');
 
     if (theme.addBodyClass && theme.bodyClass) {
         document.body.classList.add(theme.bodyClass);
@@ -73,10 +80,15 @@ function applyTheme(themeName, options = {}) {
         }
     }
 
-    // Limpar elementos de aniversário quando não for tema anniversary
+    // Limpar elementos de aniversário de namoro quando não for tema anniversary
     const anniversaryContainer = document.getElementById('anniversaryElements');
     if (anniversaryContainer && theme.key !== 'anniversary') {
         anniversaryContainer.innerHTML = '';
+    }
+
+    const birthdayContainer = document.getElementById('birthdayElements');
+    if (birthdayContainer && theme.key !== 'birthday') {
+        birthdayContainer.innerHTML = '';
     }
 
     const btn = document.getElementById('themeToggleBtn');
@@ -92,7 +104,8 @@ function applyTheme(themeName, options = {}) {
         const today = new Date();
         const isCommemorativeDateActive = isThemeDate('halloween', today)
             || isThemeDate('anniversary', today)
-            || isThemeDate('matinho', today);
+            || isThemeDate('matinho', today)
+            || isThemeDate('birthday', today);
         btn.style.display = isCommemorativeDateActive ? 'none' : 'inline-block';
     }
 
@@ -111,8 +124,10 @@ function applyTheme(themeName, options = {}) {
     // Atualizar emojis estáticos conforme tema
     updateStaticGothicElements();
 
-    // Atualizar elementos de aniversário
+    // Atualizar elementos de aniversário de namoro
     updateAnniversaryElements();
+
+    updateBirthdayElements();
 
     // Persistir
     if (!options.skipPersist) {
@@ -140,6 +155,19 @@ const themeSchedule = [
     { id: 'anniversary-nov', month: 11, dayStart: 3, dayEnd: 3, theme: 'anniversary', priority: 95 },
     { id: 'anniversary-dec', month: 12, dayStart: 3, dayEnd: 3, theme: 'anniversary', priority: 95 }
 ];
+
+(function registerBirthdayFromConfig() {
+    if (typeof CONFIG !== 'undefined' && CONFIG.BIRTHDAY && CONFIG.BIRTHDAY.month && CONFIG.BIRTHDAY.day) {
+        themeSchedule.push({
+            id: 'birthday-manuella',
+            month: CONFIG.BIRTHDAY.month,
+            dayStart: CONFIG.BIRTHDAY.day,
+            dayEnd: CONFIG.BIRTHDAY.day,
+            theme: 'birthday',
+            priority: 100
+        });
+    }
+})();
 
 function getScheduledThemeFor(date) {
     const y = date.getFullYear();
@@ -183,7 +211,7 @@ function isAfterHalloween() {
 
 // Alternância do Tema de Halloween
 function toggleHalloweenTheme() {
-    const themes = ['classic', 'halloween', 'anniversary', 'matinho'];
+    const themes = ['classic', 'halloween', 'anniversary', 'birthday', 'matinho'];
     const currentIndex = themes.indexOf(currentTheme);
     const nextIndex = (currentIndex + 1) % themes.length;
     const next = themes[nextIndex];
@@ -194,8 +222,9 @@ function toggleHalloweenTheme() {
     if (next === 'halloween') {
         for (let i = 0; i < 6; i++) setTimeout(() => createFloatingSpookyElement(), i * 250);
     } else if (next === 'anniversary') {
-        // Criar elementos especiais de aniversário
         updateAnniversaryElements();
+    } else if (next === 'birthday') {
+        updateBirthdayElements();
     }
 }
 
@@ -209,12 +238,15 @@ function updateStaticGothicElements() {
     const isHalloweenTheme = document.body.classList.contains('halloween');
     const isAnniversaryTheme = document.body.classList.contains('anniversary');
     const isMatinhoTheme = document.body.classList.contains('matinho');
+    const isBirthdayTheme = document.body.classList.contains('birthday');
 
     let set;
     if (isHalloweenTheme) {
         set = CONFIG.ANIMATION.halloweenEmojis;
     } else if (isMatinhoTheme) {
         set = CONFIG.ANIMATION.matinhoEmojis || CONFIG.ANIMATION.classicEmojis;
+    } else if (isBirthdayTheme) {
+        set = CONFIG.ANIMATION.birthdayEmojis || CONFIG.ANIMATION.classicEmojis;
     } else if (isAnniversaryTheme) {
         set = CONFIG.ANIMATION.anniversaryEmojis || CONFIG.ANIMATION.classicEmojis;
     } else {
@@ -276,9 +308,11 @@ function updateAnniversaryElements() {
     }
 }
 
-// Atualiza as estatísticas de aniversário com os meses calculados
+// Atualiza as estatísticas de aniversário (fixo: 3 meses de namoro)
 function updateAnniversaryStats() {
-    const months = calculateMonthsOfRelationship();
+    const monthsCount = 3;
+    const monthsTitlePhrase = `${monthsCount} Meses de Namoro`;
+    const tabMonthsLabel = '3 meses de namoro';
 
     // Atualizar número de meses (primeiro stat-item)
     const statItems = document.querySelectorAll('.anniversary-stats .stat-item');
@@ -287,11 +321,11 @@ function updateAnniversaryStats() {
         const firstStatLabel = statItems[0].querySelector('.stat-label');
 
         if (firstStatNumber) {
-            firstStatNumber.textContent = months;
+            firstStatNumber.textContent = String(monthsCount);
         }
 
         if (firstStatLabel && (firstStatLabel.textContent.includes('Mês') || firstStatLabel.textContent.includes('Meses'))) {
-            firstStatLabel.textContent = months === 1 ? 'Mês' : 'Meses';
+            firstStatLabel.textContent = 'Meses';
         }
     }
 
@@ -302,25 +336,72 @@ function updateAnniversaryStats() {
         badge.textContent = `${daysSinceStart} dias`;
     }
 
-    // Atualizar título da página dinamicamente
     const title = document.querySelector('.anniversary-title');
     if (title) {
         let titleText = title.innerHTML;
-        // Substituir qualquer número de meses ou "Um Mês" pelo número atual
-        titleText = titleText.replace(/\d+\s*Meses?/gi, `${months} ${months === 1 ? 'Mês' : 'Meses'}`);
-        titleText = titleText.replace(/Um\s*Mês/gi, `${months} ${months === 1 ? 'Mês' : 'Meses'}`);
+        titleText = titleText.replace(/\d+\s*Meses?\s*(?:de\s*Namoro)?/gi, monthsTitlePhrase);
+        titleText = titleText.replace(/Um\s*Mês\s*(?:de\s*Namoro)?/gi, monthsTitlePhrase);
         title.innerHTML = titleText;
     }
 
-    // Atualizar texto do botão da aba dinamicamente
     const tabButton = document.getElementById('tabBtnAnniversary');
     const tabTextSpan = document.getElementById('anniversaryTabText');
     if (tabButton && tabTextSpan) {
-        tabTextSpan.textContent = `${months} ${months === 1 ? 'Mês' : 'Meses'}`;
+        tabTextSpan.textContent = tabMonthsLabel;
     } else if (tabButton) {
-        // Fallback se o span não existir
-        tabButton.textContent = `💕 ${months} ${months === 1 ? 'Mês' : 'Meses'} 💕`;
+        tabButton.textContent = `💕 ${tabMonthsLabel} 💕`;
     }
+}
+
+function updateBirthdayElements() {
+    if (!document.body.classList.contains('birthday')) {
+        return;
+    }
+
+    const birthdayContainer = document.getElementById('birthdayElements');
+    if (!birthdayContainer || typeof CONFIG === 'undefined') {
+        return;
+    }
+
+    birthdayContainer.innerHTML = '';
+    const emojis = CONFIG.ANIMATION.birthdayEmojis || ['🎂', '🎈', '🎁'];
+    for (let i = 0; i < 8; i++) {
+        const el = document.createElement('div');
+        el.className = 'birthday-float';
+        el.textContent = emojis[i % emojis.length];
+        el.style.left = Math.random() * 88 + '%';
+        el.style.top = Math.random() * 88 + '%';
+        el.style.animationDelay = (i * 0.35) + 's';
+        el.style.animationDuration = (3.5 + Math.random() * 2.5) + 's';
+        birthdayContainer.appendChild(el);
+    }
+
+    updateBirthdayStats();
+}
+
+function updateBirthdayStats() {
+    const line = document.getElementById('birthdayAgeLine');
+    if (!line || typeof CONFIG === 'undefined' || !CONFIG.BIRTHDAY) {
+        return;
+    }
+
+    const y = CONFIG.BIRTHDAY.yearOfBirth;
+    if (typeof y !== 'number' || isNaN(y)) {
+        line.textContent = '';
+        line.hidden = true;
+        return;
+    }
+
+    line.hidden = false;
+
+    const today = new Date();
+    const month = CONFIG.BIRTHDAY.month - 1;
+    const day = CONFIG.BIRTHDAY.day;
+    let age = today.getFullYear() - y;
+    if (today.getMonth() < month || (today.getMonth() === month && today.getDate() < day)) {
+        age--;
+    }
+    line.textContent = `Hoje você faz ${age} anos.`;
 }
 
 // Exportar para uso global
@@ -333,6 +414,8 @@ window.toggleTheme = toggleTheme;
 window.updateStaticGothicElements = updateStaticGothicElements;
 window.updateAnniversaryElements = updateAnniversaryElements;
 window.updateAnniversaryStats = updateAnniversaryStats;
+window.updateBirthdayElements = updateBirthdayElements;
+window.updateBirthdayStats = updateBirthdayStats;
 window.calculateMonthsOfRelationship = calculateMonthsOfRelationship;
 window.isThemeDate = isThemeDate;
 window.isAfterHalloween = isAfterHalloween;

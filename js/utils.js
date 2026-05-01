@@ -13,7 +13,7 @@ function formatTime(seconds) {
 function applyTabVisualTheme(tabName) {
     // Remover classes de tema visual das abas
     document.querySelectorAll('.tab-content').forEach(tab => {
-        tab.classList.remove('visual-theme-halloween', 'visual-theme-anniversary', 'visual-theme-matinho');
+        tab.classList.remove('visual-theme-halloween', 'visual-theme-anniversary', 'visual-theme-matinho', 'visual-theme-birthday');
     });
 
     // Aplicar tema visual baseado na aba
@@ -25,6 +25,8 @@ function applyTabVisualTheme(tabName) {
             selectedTab.classList.add('visual-theme-anniversary');
         } else if (tabName === 'matinho') {
             selectedTab.classList.add('visual-theme-matinho');
+        } else if (tabName === 'aniversario') {
+            selectedTab.classList.add('visual-theme-birthday');
         }
     }
 }
@@ -70,9 +72,33 @@ function showTab(tabName) {
         updateAnniversaryStats();
     }
 
+    if (tabName === 'aniversario' && typeof updateBirthdayStats === 'function') {
+        updateBirthdayStats();
+    }
+
     handleTabThemeAndMusic(tabName);
     currentActiveTab = tabName;
 
+}
+
+function pauseMusicForBirthdayTab() {
+    if (!window.audio) {
+        window.audio = document.getElementById('audio-player');
+    }
+    if (window.audio) {
+        window.audio.pause();
+    }
+    window.isPlaying = false;
+    if (typeof stopVisualEffect === 'function') {
+        stopVisualEffect();
+    }
+    if (typeof updateFloatingButton === 'function') {
+        updateFloatingButton();
+    }
+    const mainPlayBtn = document.getElementById('mainPlayBtn');
+    if (mainPlayBtn) {
+        mainPlayBtn.innerHTML = '▶️';
+    }
 }
 
 function handleTabThemeAndMusic(tabName) {
@@ -85,6 +111,16 @@ function handleTabThemeAndMusic(tabName) {
         carta: 'classic',
         musicas: 'classic'
     };
+
+    // Aba de aniversário (nascimento): tema visual dark, sem música
+    if (tabName === 'aniversario') {
+        const themeChanged = applyTheme('birthday', { skipPersist: true });
+        if (themeChanged && typeof renderPlaylist === 'function') {
+            renderPlaylist();
+        }
+        pauseMusicForBirthdayTab();
+        return;
+    }
 
     const targetTheme = themeByTab[tabName] || 'classic';
     const themeChanged = applyTheme(targetTheme, { skipPersist: true });
@@ -108,6 +144,8 @@ function resolveMusicForTheme(themeKey) {
             return window.anniversaryMusic || window.manuellaMusic;
         case 'matinho':
             return window.forestMusic || window.manuellaMusic;
+        case 'birthday':
+            return window.anniversaryMusic || window.manuellaMusic;
         default:
             return window.manuellaMusic;
     }
@@ -211,4 +249,5 @@ window.showTab = showTab;
 window.applyTabVisualTheme = applyTabVisualTheme;
 window.isHalloweenDate = isHalloweenDate;
 window.isAfterHalloween2025 = isAfterHalloween2025;
+window.pauseMusicForBirthdayTab = pauseMusicForBirthdayTab;
 

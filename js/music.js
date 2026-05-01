@@ -104,6 +104,7 @@ const forestPlaylistItem = {
 function getActivePlaylist() {
     const isMatinho = document.body.classList.contains('matinho');
     const isAnniversaryTheme = document.body.classList.contains('anniversary');
+    const isBirthdayTheme = document.body.classList.contains('birthday');
     const isHalloweenTheme = document.body.classList.contains('halloween');
     const isHalloweenScheduled = typeof isHalloweenDate === 'function' ? isHalloweenDate() : false;
 
@@ -111,7 +112,7 @@ function getActivePlaylist() {
         return [forestPlaylistItem];
     }
 
-    if (isAnniversaryTheme) {
+    if (isAnniversaryTheme || isBirthdayTheme) {
         return [anniversaryPlaylistItem, ...playlist];
     }
 
@@ -126,6 +127,11 @@ let currentTrackIndex = 0;
 let isPlaying = false;
 let audio = null;
 
+function isBirthdayTabActive() {
+    const el = document.getElementById('aniversario');
+    return !!(el && el.classList.contains('active'));
+}
+
 function toggleMainPlay() {
     if (!audio) {
         audio = document.getElementById("audio-player");
@@ -135,6 +141,9 @@ function toggleMainPlay() {
     const mainPlayBtn = document.getElementById("mainPlayBtn");
 
     if (!isPlaying) {
+        if (isBirthdayTabActive()) {
+            return;
+        }
         audio.play().then(() => {
             isPlaying = true;
             mainPlayBtn.innerHTML = "⏸️";
@@ -166,8 +175,12 @@ function selectTrack(index) {
         }
     });
 
-    // Tocar automaticamente
     if (audio) {
+        if (isBirthdayTabActive()) {
+            audio.pause();
+            isPlaying = false;
+            return;
+        }
         audio.play().then(() => {
             isPlaying = true;
             updateFloatingButton();
@@ -247,12 +260,16 @@ function togglePlay() {
     }
 
     if (!isPlaying) {
+        if (isBirthdayTabActive()) {
+            return;
+        }
         audio.play().then(() => {
             isPlaying = true;
             startVisualEffect();
             updateFloatingButton();
         }).catch((error) => {
             document.addEventListener('click', () => {
+                if (isBirthdayTabActive()) return;
                 audio.play();
                 isPlaying = true;
                 startVisualEffect();

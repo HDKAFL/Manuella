@@ -94,11 +94,18 @@ function createStars() {
 function renderGothicElements() {
     const isHalloweenTheme = document.body.classList.contains('halloween');
     const isMatinhoTheme = document.body.classList.contains('matinho');
-    const emojis = isHalloweenTheme
-        ? CONFIG.ANIMATION.halloweenEmojis
-        : isMatinhoTheme
-            ? CONFIG.ANIMATION.matinhoEmojis
-            : CONFIG.ANIMATION.classicEmojis;
+    const isBirthdayTheme = document.body.classList.contains('birthday');
+    const isAnniversaryTheme = document.body.classList.contains('anniversary');
+    let emojis = CONFIG.ANIMATION.classicEmojis;
+    if (isHalloweenTheme) {
+        emojis = CONFIG.ANIMATION.halloweenEmojis;
+    } else if (isMatinhoTheme) {
+        emojis = CONFIG.ANIMATION.matinhoEmojis;
+    } else if (isBirthdayTheme) {
+        emojis = CONFIG.ANIMATION.birthdayEmojis || CONFIG.ANIMATION.classicEmojis;
+    } else if (isAnniversaryTheme) {
+        emojis = CONFIG.ANIMATION.anniversaryEmojis || CONFIG.ANIMATION.classicEmojis;
+    }
     const positions = CONFIG.ANIMATION.gothicPositions;
     
     // Renderizar elementos da entrada (entry-gothic-element)

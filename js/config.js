@@ -3,12 +3,24 @@
 
 const CONFIG = {
     // ==========================================
+    // ANIVERSÁRIO (nascimento) — edite mês/dia (e opcionalmente o ano)
+    // ==========================================
+    BIRTHDAY: {
+        /** Mês (1–12) e dia do aniversário da Manuella */
+        month: 5,
+        day: 1,
+        /** Se definido (ex.: 2000), a aba mostra a idade automaticamente */
+        yearOfBirth: null
+    },
+
+    // ==========================================
     // PATHS - Caminhos de pastas
     // ==========================================
     PATHS: {
         photos: 'photos/',
         photosHalloween: 'photos-halloween/',
         photosCat: 'photos-cat/',
+        photosBirthday: 'photos-birthday/',
         music: 'music/',
         musicHalloween: 'music-halloween/',
         musicAnniversary: 'music-anniversary/',
@@ -54,7 +66,8 @@ const CONFIG = {
         classicEmojis: ['🌕', '❤️', '🖤', '🌙', '💕', '🌚'],
         halloweenEmojis: ['🎃', '🦇', '👻', '🕷️', '🕯️', '🪦'],
         anniversaryEmojis: ['💕', '💖', '💗', '🌹', '✨', '💝'],
-        matinhoEmojis: ['🍃', '🌿', '🍀', '🪴', '🍄', '🦋', '🐸', '🦉']
+        matinhoEmojis: ['🍃', '🌿', '🍀', '🪴', '🍄', '🦋', '🐸', '🦉'],
+        birthdayEmojis: ['🖤', '🌙', '🦇', '🥀', '🕯️', '⚰️', '🔮', '🕸️']
     },
 
     // ==========================================

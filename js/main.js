@@ -12,13 +12,26 @@ function enterPage() {
     const mainContent = document.getElementById("mainContent");
     mainContent.style.display = "block";
 
+    // No dia do aniversário: tema dark + aba Aniversário já como primeira tela
+    if (typeof isThemeDate === 'function' && isThemeDate('birthday', new Date())) {
+        if (typeof applyTheme === 'function') {
+            applyTheme('birthday', { skipPersist: true });
+        }
+        if (typeof showTab === 'function') {
+            showTab('aniversario');
+        }
+    }
+
     // Inicializar página principal
     setTimeout(() => {
         initMainPage();
 
-        // Ativar música MP3 após inicializar
         setTimeout(() => {
-            // Tocar primeira música da playlist (que inclui Halloween se for o caso)
+            const onBirthdayTab = document.getElementById('aniversario') && document.getElementById('aniversario').classList.contains('active');
+            if (onBirthdayTab && typeof pauseMusicForBirthdayTab === 'function') {
+                pauseMusicForBirthdayTab();
+                return;
+            }
             currentTrackIndex = 0;
             selectTrack(0);
             if (audio) {
@@ -48,6 +61,11 @@ function initMainPage() {
             updateAnniversaryStats();
         }
     }
+    if (document.getElementById('aniversario') && document.getElementById('aniversario').classList.contains('active')) {
+        if (typeof updateBirthdayStats === 'function') {
+            updateBirthdayStats();
+        }
+    }
 
     // Configurar audio element com event listeners
     if (!audio) {
@@ -66,9 +84,13 @@ function initMainPage() {
         // Erro no áudio
     });
 
-    // Player toca automaticamente sempre que a página carregar
-    isPlaying = true;
-    startVisualEffect();
+    const onBirthdayTab = document.getElementById('aniversario') && document.getElementById('aniversario').classList.contains('active');
+    if (!onBirthdayTab) {
+        isPlaying = true;
+        startVisualEffect();
+    } else {
+        isPlaying = false;
+    }
 
     // Adicionar elementos góticos periodicamente (probabilidade 0.2, interval 3s)
     setInterval(() => {
@@ -93,13 +115,13 @@ function initMainPage() {
 // Inicializar página de entrada
 document.addEventListener("DOMContentLoaded", function () {
     createEntryStars();
-    renderGothicElements(); // Renderizar emojis góticos baseado no tema inicial
 
     const themeBtn = document.getElementById('themeToggleBtn');
     const imagesBtn = document.getElementById('floatingImagesBtn');
     const musicBtn = document.getElementById('floatingMusicBtn');
     const isHalloween = isHalloweenDate();
     const today = new Date();
+    const isBirthdayToday = isThemeDate('birthday', today);
     const isAnniversary = isThemeDate('anniversary', today);
     const isMatinho = isThemeDate('matinho', today);
     const afterHalloween = isAfterHalloween2025();
@@ -132,6 +154,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Não definir aqui, deixar o applyTheme controlar
 
     applyTheme(initialTheme, { skipPersist: true });
+    renderGothicElements();
+
     if (!themeRegistry[initialTheme].addBodyClass && imagesBtn) imagesBtn.style.display = 'none';
 
     // Atualizar título do botão da aba de aniversário sempre que a página carrega
@@ -139,30 +163,34 @@ document.addEventListener("DOMContentLoaded", function () {
         updateAnniversaryStats();
     }
 
-    // Se for tema de aniversário, garantir que a música esteja na playlist e preparada
-    if (initialTheme === 'anniversary' && typeof renderPlaylist === 'function') {
+    if (typeof updateBirthdayStats === 'function') {
+        updateBirthdayStats();
+    }
+
+    if ((initialTheme === 'anniversary' || initialTheme === 'birthday') && typeof renderPlaylist === 'function') {
         renderPlaylist();
     }
 
-    // Se for Halloween, focar na aba Halloween automaticamente
-    if (isHalloween) {
+    // Aniversário de nascimento (prioridade alta): aba dedicada
+    if (isBirthdayToday) {
+        showTab('aniversario');
+        const allBtns = document.querySelectorAll('.tab-btn');
+        allBtns.forEach(btn => btn.classList.remove('active'));
+        const aniversarioBtn = document.getElementById('tabBtnAniversario');
+        if (aniversarioBtn) aniversarioBtn.classList.add('active');
+    } else if (isHalloween) {
         showTab('halloween');
         const allBtns = document.querySelectorAll('.tab-btn');
         allBtns.forEach(btn => btn.classList.remove('active'));
         const halloweenBtn = document.getElementById('tabBtnHalloween');
         if (halloweenBtn) halloweenBtn.classList.add('active');
-    }
-
-    // Se for dia 3 (aniversário mensal), focar na aba de aniversário automaticamente
-    if (isAnniversary) {
+    } else if (isAnniversary) {
         showTab('anniversary');
         const allBtns = document.querySelectorAll('.tab-btn');
         allBtns.forEach(btn => btn.classList.remove('active'));
         const anniversaryBtn = document.getElementById('tabBtnAnniversary');
         if (anniversaryBtn) anniversaryBtn.classList.add('active');
-    }
-
-    if (isMatinho) {
+    } else if (isMatinho) {
         showTab('matinho');
         const allBtns = document.querySelectorAll('.tab-btn');
         allBtns.forEach(btn => btn.classList.remove('active'));
