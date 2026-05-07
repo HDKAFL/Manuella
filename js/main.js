@@ -124,6 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const isBirthdayToday = isThemeDate('birthday', today);
     const isAnniversary = isThemeDate('anniversary', today);
     const isMatinho = isThemeDate('matinho', today);
+    const isAnniversary4May8 = (today.getMonth() + 1) === 5 && today.getDate() === 8;
     const afterHalloween = isAfterHalloween2025();
 
     allowPostHalloweenFeatures = afterHalloween; // só depois de 31/10/2025
@@ -178,6 +179,19 @@ document.addEventListener("DOMContentLoaded", function () {
         allBtns.forEach(btn => btn.classList.remove('active'));
         const aniversarioBtn = document.getElementById('tabBtnAniversario');
         if (aniversarioBtn) aniversarioBtn.classList.add('active');
+    } else if (isAnniversary4May8) {
+        // 08/05: aba especial de 4 meses
+        if (typeof applyTheme === 'function') {
+            const themeChanged = applyTheme('anniversary', { skipPersist: true });
+            if (themeChanged && typeof renderPlaylist === 'function') {
+                renderPlaylist();
+            }
+        }
+        showTab('anniversary4');
+        const allBtns = document.querySelectorAll('.tab-btn');
+        allBtns.forEach(btn => btn.classList.remove('active'));
+        const anniversary4Btn = document.getElementById('tabBtnAnniversary4');
+        if (anniversary4Btn) anniversary4Btn.classList.add('active');
     } else if (isHalloween) {
         showTab('halloween');
         const allBtns = document.querySelectorAll('.tab-btn');

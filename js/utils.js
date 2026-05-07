@@ -21,7 +21,7 @@ function applyTabVisualTheme(tabName) {
     if (selectedTab) {
         if (tabName === 'halloween') {
             selectedTab.classList.add('visual-theme-halloween');
-        } else if (tabName === 'anniversary') {
+        } else if (tabName === 'anniversary' || tabName === 'anniversary4') {
             selectedTab.classList.add('visual-theme-anniversary');
         } else if (tabName === 'matinho') {
             selectedTab.classList.add('visual-theme-matinho');
@@ -107,6 +107,7 @@ function handleTabThemeAndMusic(tabName) {
     const themeByTab = {
         halloween: 'halloween',
         anniversary: 'anniversary',
+        anniversary4: 'anniversary',
         matinho: 'matinho',
         carta: 'classic',
         musicas: 'classic'
