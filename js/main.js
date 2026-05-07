@@ -124,7 +124,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const isBirthdayToday = isThemeDate('birthday', today);
     const isAnniversary = isThemeDate('anniversary', today);
     const isMatinho = isThemeDate('matinho', today);
-    const isAnniversary4May6To15 = (today.getMonth() + 1) === 5 && today.getDate() >= 6 && today.getDate() <= 15;
     const afterHalloween = isAfterHalloween2025();
 
     allowPostHalloweenFeatures = afterHalloween; // só depois de 31/10/2025
@@ -172,45 +171,14 @@ document.addEventListener("DOMContentLoaded", function () {
         renderPlaylist();
     }
 
-    // Aniversário de nascimento (prioridade alta): aba dedicada
-    if (isBirthdayToday) {
-        showTab('aniversario');
-        const allBtns = document.querySelectorAll('.tab-btn');
-        allBtns.forEach(btn => btn.classList.remove('active'));
-        const aniversarioBtn = document.getElementById('tabBtnAniversario');
-        if (aniversarioBtn) aniversarioBtn.classList.add('active');
-    } else if (isAnniversary4May6To15) {
-        // 06/05 a 15/05: aba especial de 4 meses
-        if (typeof applyTheme === 'function') {
-            const themeChanged = applyTheme('anniversary', { skipPersist: true });
-            if (themeChanged && typeof renderPlaylist === 'function') {
-                renderPlaylist();
-            }
+    // Por enquanto: aba "4 meses" como padrão, independente da data
+    if (typeof applyTheme === 'function') {
+        const themeChanged = applyTheme('anniversary', { skipPersist: true });
+        if (themeChanged && typeof renderPlaylist === 'function') {
+            renderPlaylist();
         }
-        showTab('anniversary4');
-        const allBtns = document.querySelectorAll('.tab-btn');
-        allBtns.forEach(btn => btn.classList.remove('active'));
-        const anniversary4Btn = document.getElementById('tabBtnAnniversary4');
-        if (anniversary4Btn) anniversary4Btn.classList.add('active');
-    } else if (isHalloween) {
-        showTab('halloween');
-        const allBtns = document.querySelectorAll('.tab-btn');
-        allBtns.forEach(btn => btn.classList.remove('active'));
-        const halloweenBtn = document.getElementById('tabBtnHalloween');
-        if (halloweenBtn) halloweenBtn.classList.add('active');
-    } else if (isAnniversary) {
-        showTab('anniversary');
-        const allBtns = document.querySelectorAll('.tab-btn');
-        allBtns.forEach(btn => btn.classList.remove('active'));
-        const anniversaryBtn = document.getElementById('tabBtnAnniversary');
-        if (anniversaryBtn) anniversaryBtn.classList.add('active');
-    } else if (isMatinho) {
-        showTab('matinho');
-        const allBtns = document.querySelectorAll('.tab-btn');
-        allBtns.forEach(btn => btn.classList.remove('active'));
-        const matinhoBtn = document.getElementById('tabBtnMatinho');
-        if (matinhoBtn) matinhoBtn.classList.add('active');
     }
+    showTab('anniversary4');
 });
 
 // Exportar variáveis globais
