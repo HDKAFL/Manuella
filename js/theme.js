@@ -141,6 +141,8 @@ function applyTheme(themeName, options = {}) {
 const themeSchedule = [
     { id: 'halloween', month: 10, dayStart: 31, dayEnd: 31, theme: 'halloween', priority: 90 },
     { id: 'matinho-nov', month: 11, dayStart: 1, dayEnd: 30, theme: 'matinho', priority: 80 },
+    // 06/05 a 15/05: aba especial de "4 meses" (usa o tema anniversary)
+    { id: 'anniversary-4months-may6-15', month: 5, dayStart: 6, dayEnd: 15, theme: 'anniversary', priority: 96 },
     // Tema de aniversário no dia 3 de todo mês
     { id: 'anniversary-jan', month: 1, dayStart: 3, dayEnd: 3, theme: 'anniversary', priority: 95 },
     { id: 'anniversary-feb', month: 2, dayStart: 3, dayEnd: 3, theme: 'anniversary', priority: 95 },
