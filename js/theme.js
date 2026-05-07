@@ -141,8 +141,8 @@ function applyTheme(themeName, options = {}) {
 const themeSchedule = [
     { id: 'halloween', month: 10, dayStart: 31, dayEnd: 31, theme: 'halloween', priority: 90 },
     { id: 'matinho-nov', month: 11, dayStart: 1, dayEnd: 30, theme: 'matinho', priority: 80 },
-    // 08/05: aba especial de "4 meses" (usa o tema anniversary)
-    { id: 'anniversary-4months-may8', month: 5, dayStart: 8, dayEnd: 8, theme: 'anniversary', priority: 96 },
+    // 07/05 a 15/05: aba especial de "4 meses" (usa o tema anniversary)
+    { id: 'anniversary-4months-may7-15', month: 5, dayStart: 7, dayEnd: 15, theme: 'anniversary', priority: 96 },
     // Tema de aniversário no dia 3 de todo mês
     { id: 'anniversary-jan', month: 1, dayStart: 3, dayEnd: 3, theme: 'anniversary', priority: 95 },
     { id: 'anniversary-feb', month: 2, dayStart: 3, dayEnd: 3, theme: 'anniversary', priority: 95 },
@@ -316,8 +316,13 @@ function updateAnniversaryStats() {
     const monthsTitlePhrase = `${monthsCount} Meses de Namoro`;
     const tabMonthsLabel = '3 meses de namoro';
 
+    const anniversaryTab = document.getElementById('anniversary');
+    if (!anniversaryTab) {
+        return;
+    }
+
     // Atualizar número de meses (primeiro stat-item)
-    const statItems = document.querySelectorAll('.anniversary-stats .stat-item');
+    const statItems = anniversaryTab.querySelectorAll('.anniversary-stats .stat-item');
     if (statItems.length > 0) {
         const firstStatNumber = statItems[0].querySelector('.stat-number');
         const firstStatLabel = statItems[0].querySelector('.stat-label');
@@ -333,12 +338,12 @@ function updateAnniversaryStats() {
 
     // Atualizar badge de dias
     const daysSinceStart = Math.floor((new Date() - new Date(2025, 9, 3)) / (1000 * 60 * 60 * 24));
-    const badge = document.querySelector('.anniversary-badge');
+    const badge = anniversaryTab.querySelector('.anniversary-badge');
     if (badge) {
         badge.textContent = `${daysSinceStart} dias`;
     }
 
-    const title = document.querySelector('.anniversary-title');
+    const title = anniversaryTab.querySelector('.anniversary-title');
     if (title) {
         let titleText = title.innerHTML;
         titleText = titleText.replace(/\d+\s*Meses?\s*(?:de\s*Namoro)?/gi, monthsTitlePhrase);
